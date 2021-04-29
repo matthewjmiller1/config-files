@@ -1,0 +1,11 @@
+" Matt Miller's .gvimrc
+
+" This gets reset to the default when the GUI starts, so we need
+" this set again in the .gvimrc file.
+set noerrorbells vb t_vb=
+
+" Turn on spell checking since gvim is usually used for text files
+set spell
+
+" Disable swap files
+set noswapfile

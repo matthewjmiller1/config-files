@@ -1,0 +1,24 @@
+# vim: syntax=sh
+# vim: filetype=sh
+
+# Macbook-specific PATH setup
+# Called from .bashrc
+
+TEX_DIR="/Library/TeX/texbin"
+if [ -d "$TEX_DIR" ]; then
+    export PATH=$PATH:$TEX_DIR
+fi
+
+RUST_DIR="$HOME/.cargo/bin"
+if [ -d "$RUST_DIR" ]; then
+    export PATH=$RUST_DIR:$PATH
+fi
+
+# Put this before /usr/bin/ so python default to python3
+PYTHON_DIR=/usr/local/opt/python/libexec/bin
+if [ -d "$PYTHON_DIR" ]; then
+    export PATH=$PYTHON_DIR:$PATH
+fi
+
+export PATH=/usr/local/bin:$PATH
+export PATH=/usr/local/sbin:$PATH

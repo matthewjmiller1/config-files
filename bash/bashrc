@@ -1,0 +1,467 @@
+# vim: syntax=sh
+# vim: filetype=sh
+
+# Matt Miller's .bashrc
+
+### Begin built-in setup ###
+
+# Creation mode (umask -S):
+# u=rwx,g=rx,o=rx
+umask 022
+
+# Use +o to unset options
+# Explicitly require redirect to overwrite existing file.
+set -o noclobber
+# Do not logoff/close terminal on EOF
+set -o ignoreeof
+
+# Disable core dumps (use "-c unlimited" to enable)
+ulimit -c 0
+
+# Use -u to unset shopt's
+# Enable aliases for non-interactive shells
+shopt -s expand_aliases
+# Append current history to $HISTFILE rather than overwriting
+shopt -s histappend
+
+# Clear existing aliases
+unalias -a
+
+### End built-in setup ###
+
+### Begin PATH setup ###
+
+# Start with a clean path
+export PATH=$(getconf PATH)
+
+# Do any environment-specific PATH setup
+PATH_FILE="$HOME/.bashrc_path"
+if test -f "$PATH_FILE"; then
+    . $PATH_FILE
+fi
+
+export PATH=$PATH:.
+
+### End PATH setup ###
+
+# Enable bash completion, if available
+export BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"
+[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && \
+    . "/usr/local/etc/profile.d/bash_completion.sh"
+
+# Enable kubectl auto completion, if kubectl exists
+if command -v kubectl &> /dev/null; then
+    source <(kubectl completion bash)
+fi
+
+### Begin environment variables ###
+
+# Write each comand to $HISTFILE instead of waiting until exit
+export PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
+# $HISTFILE limit
+export HISTFILESIZE=1000000
+# In-memory history limit
+export HISTSIZE=1000000
+# Ignore duplicate commands, those beginning with a space,
+# and the exit command.
+export HISTIGNORE="&:[ ]*:exit"
+
+export EDITOR=vim
+export VISUAL=$EDITOR
+# Make the prompt show the hostname
+export PS1="\h$ "
+
+# Make ls show colors
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    export CLICOLOR=1
+fi
+
+### End environment variables ###
+
+### Begin aliases ###
+
+# Force interactive prompt before overwriting/removing a file
+alias cp='cp -i'
+alias rm='rm -i'
+alias mv='mv -i'
+
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    alias ls='ls --color=auto'
+fi
+
+# Command shortcuts
+
+if command -v vim &> /dev/null; then
+    alias vi='vim'
+fi
+
+if command -v tshark &> /dev/null; then
+    alias ts_fields="tshark -E header=y -T fields -e frame.number -e frame.time_relative -e ip.src -e ip.dst -e tcp.srcport -e tcp.dstport -e tcp.seq -e tcp.ack -e tcp.len -e tcp.nxtseq -e tcp.window_size -e tcp.flags "
+fi
+
+if command -v kubectl &> /dev/null; then
+    alias k="kubectl"
+    # Allow kubectl auto-complete to work with the alias
+    complete -F __start_kubectl k
+fi
+
+if command -v helm &> /dev/null; then
+    alias h="helm"
+fi
+
+if command -v gcloud &> /dev/null; then
+    alias gc="gcloud"
+fi
+
+if command -v minikube &> /dev/null; then
+    alias mk="minikube"
+fi
+
+# Git aliases
+if command -v git &> /dev/null; then
+    alias ga='git add'
+    alias gp='git push'
+    alias gl='git log'
+    alias gl='git log --pretty=format:"%h%x09%an%x09%ad%x09%s"'
+    alias gl2='git log --pretty=oneline --abbrev-commit'
+    alias gs='git status'
+    alias gd='git diff'
+    alias gdc='git diff --cached'
+    alias gm='git commit -m'
+    alias gma='git commit -am'
+    alias gb='git branch'
+    alias gc='git checkout'
+    alias gra='git remote add'
+    alias grr='git remote rm'
+    alias gpu='git pull'
+    alias gcl='git clone'
+    alias gsb='git show-branch'
+fi
+
+alias vncstart="vncserver -pn -depth 24 -alwaysshared \
+    -geometry 1200x850"
+
+alias sshpasswd="ssh-keygen -p"
+
+# ls all the vnc processes active
+alias vncls="ls ~/.vnc/*.pid | sed -n \
+    's?.*/\.vnc/\([^:]*\):\([0-9]*\)\.pid?\nServer: \1\nDisplay: \2?p'"
+
+alias myps="ps -u $(whoami) -o user,pid,stime,time,args"
+alias pstree="ps U $(whoami) jfww"
+alias pstree_all="ps axjfww"
+
+# Aliases for GNU global tags
+if command -v global &> /dev/null; then
+    # Find global definitions
+    alias gtd="global -x"
+    # Find references to definiton (not symbol)
+    alias gtr="global -rx"
+    # Find instances of symbol (e.g., variables)
+    alias gts="global -sx"
+    # Find all string instances (i.e., grep codebase for string)
+    alias gtg="global -gx"
+    # Find path for file names
+    alias gtf="global -P"
+    # Find all objects with prefix
+    alias gtc="global -c"
+fi
+
+# Docker aliases
+if command -v docker &> /dev/null; then
+    alias dk_rm_dangling='docker rmi $(docker images -f "dangling=true" -q)'
+    alias dk_rm_exited='docker rm $(docker ps -a -f status=exited -q)'
+    alias dk_rm_stopped='docker rm $(docker ps -a -f status=stopped -q)'
+fi
+
+### End aliases ###
+
+### Begin functions ###
+
+# To use xargs with a bash function:
+# ls | grep "dir/" | xargs bash -c '<function> "$@"' _
+
+# Kill a vnc session
+function vnckill { 
+    vncserver -kill :${1}; 
+};
+
+# Use: findgrep path "*.h" my_string
+# To find an object location in makefiles, use:
+# findgrep "make*" "object_name\.o"
+function findgrep { 
+    local PRUNE_STR=""
+    if [ ! -z ${4} ]
+    then
+        PRUNE_STR="-path \"*/${4}/*\" -prune -o "
+    fi
+    CMD="find ${1} ${PRUNE_STR} \( -type f -or -type l \) -name \"${2}\""
+    CMD="$CMD -follow -exec grep -H -n \"${3}\" '{}' \;"
+    eval $CMD
+};
+
+# Iterate over multiple .pcap files to find with tshark
+function findtshark { 
+    for i in $(find ${1} \( -type f -or -type l \) -name "${2}" -follow);
+    do
+    echo "***** $i *****";
+    tshark -n -t ad -r $i -R "${3}"
+    echo "**************";
+    done; 
+};
+
+function subfind {
+    find ${1} -follow \( -type f -or -type d \);
+};
+
+function svndiff {
+    local DIFF_FNAME="$HOME/tmp/r${1}.diff"
+    svn diff -c ${1} --diff-cmd diff -x "-p -C 5" >| $DIFF_FNAME
+    echo "Diff is in $DIFF_FNAME"
+};
+
+# Combine two diff files into one that can be patched
+function diff_combine {
+    # Reset the index for getopts
+    OPTIND=1
+    function usage {
+       echo ""
+       echo "Combine two diff files into one"
+       echo "Usage: diff_combine [-f] <diff file 1> <diff file 2>" \
+            "<output diff file>"
+       echo "   -f = force overwrite of existing file"
+       echo ""
+    }
+
+    local do_overwrite=FALSE
+    # Add extra opts to "hsm" string below
+    while getopts fh  opt
+    do
+        case $opt in
+            f) do_overwrite=TRUE;;
+            h) usage 
+               return 1;;
+           \?) usage
+               return 1;;
+        esac
+    done
+
+    if [ "$OPTIND" -gt "$#" ]
+    then
+        usage
+        return 1
+    fi
+
+    local shiftcount=$((OPTIND - 1))
+    shift $shiftcount
+    local diff_file1=$1
+    local diff_file2=$2
+    local out_diff_file=$3
+
+    if [ -z $diff_file1 ] || [ -z $diff_file2 ] || [ -z $out_diff_file ]
+    then
+        usage
+        return 1
+    fi
+
+    if [ $do_overwrite == FALSE ] && [ -e $out_diff_file ]
+    then
+        echo ""
+        echo "Will not overwrite existing file $out_diff_file"
+        echo "Use -f option to force overwrite"
+        echo ""
+    else
+        cat $diff_file1 >| $out_diff_file 2>&1;
+        cat $diff_file2 | sed '1d' >> $out_diff_file 2>&1;
+    fi
+};
+
+# Run a command and send an email when finished
+function maildone {
+    local DO_EMAIL=1;
+    exec 3>&1 4>&2;
+    (local CMD=$@;
+    local PWD=$(pwd);
+    local RC_FILE="/tmp/$(whoami)-$RANDOM";
+    local TIME=$( { time $CMD 1>&3 2>&4; \
+                    echo ${PIPESTATUS[0]} > $RC_FILE; } 2>&1 );
+    local FILES=$(lsof -a -p $! -d0,1,2 -Fn 2> /dev/null | \
+        sed -n 's/^n\(\S\+\).*/\1/p');
+    local STDIN_FILE=$(echo "$FILES" | sed -n '1 p');
+    local STDOUT_FILE=$(echo "$FILES" | sed -n '2 p');
+    local STDERR_FILE=$(echo "$FILES" | sed -n '3 p');
+    local RC=$(cat $RC_FILE);
+    local RC_STR="SUCCESS";
+    if [ $RC != 0 ]; then
+        RC_STR="ERROR";
+    fi
+    local MSG=$(printf \
+        "\ncommand: \"%s\"\ndir: %s\nstdout: %s\nstderr: %s\nrc: %s(%s)\n%s\n" \
+        "$CMD" "$PWD" "$STDOUT_FILE" "$STDERR_FILE" \
+        "$RC_STR" $RC "$TIME");
+    if [ $DO_EMAIL == 1 ]; then
+        echo "$MSG" | mutt -s "Background Command Finished" \
+            $(whoami)@netapp.com;
+    else
+        echo "$MSG";
+    fi
+    rm -f $RC_FILE;
+    ) &
+    exec 3>&- 4>&-;
+};
+
+# Count all the lines in .pcap files that match an expression like:
+#(ip.addr==10.225.217.116 && tcp.port==2337 && tcp.port==445)
+function pcapcount { 
+    for i in $(find ${1} \( -type f \) -name "${2}");
+    do
+        local TCOUNT=$(tshark -t ad -r $i -R "${3}" | wc -l)
+        if [ "$TCOUNT" -gt 0 ]
+        then
+            echo "$i : $TCOUNT"
+        fi
+    done; 
+};
+
+# convert hex to decimal
+function h2d {
+    python -c "print(int('${1}', 16))"
+};
+
+# convert decimal to hex
+function d2h {
+    python -c "print(hex(${1}))"
+};
+
+# convert decimal to IP address
+function d2i {
+    python -c "import ipaddress; print(ipaddress.ip_address(${1}).__str__())"
+};
+
+# convert hex to IP address
+function h2i {
+    d2i $(h2d ${1})
+};
+
+# convert IP address to decimal
+function i2d {
+    python -c "import ipaddress; print(int(ipaddress.ip_address('${1}')))"
+};
+
+# convert IP address to hex
+function i2h {
+    d2h $(i2d ${1})
+};
+
+# add two hex numbers
+function hexadd {
+    local DECVAL1=${1}
+    if [ $(expr index ${1} 0x) == 1 ]
+    then
+        DECVAL1=$(h2d ${1})
+    fi
+    local DECVAL2=${2}
+    if [ $(expr index ${2} 0x) == 1 ]
+    then
+        DECVAL2=$(h2d ${2})
+    fi
+    echo $(d2h $(($DECVAL1 + $DECVAL2)))
+};
+
+# subtract two hex numbers
+function hexsub {
+    local DECVAL1=${1}
+    if [ $(expr index ${1} 0x) == 1 ]
+    then
+        DECVAL1=$(h2d ${1})
+    fi
+    local DECVAL2=${2}
+    if [ $(expr index ${2} 0x) == 1 ]
+    then
+        DECVAL2=$(h2d ${2})
+    fi
+    echo $(d2h $(($DECVAL1 - $DECVAL2)))
+};
+
+# add two decimal numbers
+function decadd {
+    local DECVAL1=${1}
+    if [ $(expr index ${1} 0x) == 1 ]
+    then
+        DECVAL1=$(h2d ${1})
+    fi
+    local DECVAL2=${2}
+    if [ $(expr index ${2} 0x) == 1 ]
+    then
+        DECVAL2=$(h2d ${2})
+    fi
+    echo $(($DECVAL1 + $DECVAL2))
+};
+
+# subtract two decimal numbers
+function decsub {
+    local DECVAL1=${1}
+    if [ $(expr index ${1} 0x) == 1 ]
+    then
+        DECVAL1=$(h2d ${1})
+    fi
+    local DECVAL2=${2}
+    if [ $(expr index ${2} 0x) == 1 ]
+    then
+        DECVAL2=$(h2d ${2})
+    fi
+    echo $(($DECVAL1 - $DECVAL2))
+};
+
+# add two IP addresses
+function ipadd {
+    local DECVAL1=${1}
+    if [ $(expr index ${1} 0x) == 1 ]
+    then
+        DECVAL1=$(h2d ${1})
+    elif [ $(echo ${1} | cut -d. --output-delimiter=' ' -f1- \
+        | wc -w) == 4 ]
+    then
+        DECVAL1=$(i2d ${1})
+    fi
+    local DECVAL2=${2}
+    if [ $(expr index ${2} 0x) == 1 ]
+    then
+        DECVAL2=$(h2d ${2})
+    elif [ $(echo ${2} | cut -d. --output-delimiter=' ' -f1- \
+        | wc -w) == 4 ]
+    then
+        DECVAL2=$(i2d ${2})
+    fi
+    echo $(d2i $(($DECVAL1 + $DECVAL2)))
+};
+
+# Sort du output
+function dusort {
+    du -s ${1} | sort -nr | cut -f2 | xargs du -hs;
+};
+
+# cat certain lines in a file
+function catlines {
+    if [ -z ${1} ] || [ -z ${2} ] || [ -z ${3} ]
+    then
+        echo "Invalid parameters"
+        return 1
+    fi
+    if [ ${2} -gt ${3} ]
+    then
+        echo "Invalid range ${2},${3}"
+        return 1
+    fi
+    printf "\n**********\n"
+    cat ${1} | sed -n "${2},${3} p";
+    printf "**********\n\n"
+};
+
+### End functions ###
+
+# Do any environment-specific setup
+ENV_FILE="$HOME/.bashrc_env"
+if test -f "$ENV_FILE"; then
+    . $ENV_FILE
+fi

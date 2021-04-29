@@ -1,0 +1,351 @@
+" Matt Miller's .vimrc
+
+" List of plugins to configure, if installed
+let s:configure_ctrlp = 0
+let s:configure_md_preview = 0
+
+" Uses vim-plug as a plugin manager, if it is installed
+if !empty(glob('~/.vim/autoload/plug.vim'))
+    " This uses vim-plug as a plugin manager:
+    " https://github.com/junegunn/vim-plug
+    "
+    " To install a plugin:
+    " Plug 'foo/bar.vim'
+    "   - Shorthand for https://github.com/foo/bar.vim
+    " Plug 'https://github.com/foo/bar.vim'
+    " Reload .vimrc and then:
+    " :PlugInstall
+    " 
+    " Show plugins status:
+    " :PlugStatus
+    " To update plugins (from github):
+    " :PlugUpdate
+    " To update vim-plug:
+    " :PlugUpgrade
+
+    " Plugins will be downloaded under the specified directory.
+    call plug#begin('~/.vim/plugged')
+
+    " Rust syntax
+    Plug 'rust-lang/rust.vim'
+
+    " CtrlP for buffer management
+    Plug 'ctrlpvim/ctrlp.vim'
+    let s:configure_ctrlp = 1
+
+    " Github Markdown preview
+    " Depends on grip being installed:
+    " https://github.com/joeyespo/grip
+    Plug 'JamshedVesuna/vim-markdown-preview'
+    let s:configure_md_preview = 1
+
+    " List ends here. Plugins become visible to Vim after this call.
+    " Automatically sets 'filetype plugin indent on' and 'syntax enable'
+    call plug#end()
+else
+    " Manually install any plugins
+
+    " CtrlP
+    let s:ctrlp_local_path = '~/.vim/bundle/ctrlp.vim'
+    if !empty(glob(s:ctrlp_local_path))
+        let s:configure_ctrlp = 1
+        " Prepend the plugin to the runtimepath option
+        let &runtimepath=s:ctrlp_local_path . ',' . &runtimepath
+    endif
+endif
+
+" Don't make it vi-compatible
+set nocompatible
+
+" Turn on syntax highlighting
+syntax on
+
+" Turn on filetype plugins and indentation
+filetype plugin indent on
+
+" Put swap files in a .vim directory. The '//' at the end means to
+" preserve the entire file path in this directory so there
+" are not conflicts with files that have the same name but
+" different paths.
+let s:swap_path = expand('~/.vim/swap//')
+if isdirectory(s:swap_path)
+    let &directory=s:swap_path
+endif
+
+if s:configure_ctrlp
+    " Shortcut to invoke ctrlp
+    let g:ctrlp_map = '<c-p>'
+    " Search vim buffers for a file instead of the filesystem (useful for large
+    " code bases)
+    let g:ctrlp_cmd = 'CtrlPBuffer'
+    " Search by filename (vs. full path) by default (toggle with CTRL-d)
+    let g:ctrlp_by_filename = 1
+    " If the file is already open in the window, still open a new instance
+    let g:ctrlp_switch_buffer = 0
+    " Use regex mode as default
+    let g:ctrlp_regexp = 1
+    " Disable root path b/c we're using buffer searching
+    let g:ctrlp_working_path_mode = 0
+endif
+
+if s:configure_md_preview
+    " Plugin settings for vim-markdown-preview
+    " Use grip
+    let vim_markdown_preview_github=1
+    " Preview images when using the hotkey
+    let vim_markdown_preview_toggle=1
+    " Refresh preview with hotkey CTRL-m
+    let vim_markdown_preview_hotkey='<C-m>'
+endif
+
+" Turn off bracketed paste mode
+set t_BE=
+
+" Default tab/indent behavior to set tabstops such that:
+" 1. A tab is equal to 8 spaces
+" 2. Indendation is 4 spaces
+" 3. Tabs do expand to spaces
+" (See option 2 in the tabstop help entry)
+set tabstop=8
+set shiftwidth=4
+set expandtab
+
+" Default to 80 char textwidth
+set tw=80
+
+" Don't change the working directory when opening files, buffers, etc.
+" Doing so breaks some plugins
+set noautochdir
+
+" Continue the previous line's indentation
+set autoindent
+
+" For searches, ignore case by default
+set ignorecase
+" For searches, use case if it has capital letters
+set smartcase
+" Jump to next match as search is being typed
+set incsearch
+
+" Briefly show matching bracket
+set showmatch
+
+" Display command being entered; and the number of chars and lines
+" currently selected in visual mode.
+set showcmd
+
+" Allow backspaces over autoindents, end-of-lines,
+" and insertion start points.
+set backspace=indent,eol,start
+
+" Unbind some useless/annoying default key bindings.
+" 'Q' in normal mode enters Ex mode. You almost never want this.
+nmap Q <Nop>
+
+" Always show a status line
+set laststatus=2
+
+" Display as much as possible of the last line
+set display=lastline
+
+" Show cursor position
+set ruler
+
+" Abbreviate info messages (a)
+" Truncate file message if too long to fit on command-line (t)
+" Don't give intro message when starting vim (I)
+" Don't echo the file info when editing a file (F)
+set shortmess=atI
+if v:version >= 800
+    set shortmess+=F
+endif
+
+" Turn off the beep and visual bell
+set noerrorbells vb t_vb=
+
+" Avoid the 'Hit ENTER' messages by using two lines for the command line
+set cmdheight=2
+
+" Enable command completions with tab
+set wildmenu
+
+" To perform insert-mode completion, scan the current buffer, 
+" buffers in other windows, loaded buffers in the buffer list 
+" and unloaded buffers in the buffer list.
+set complete=.,w,b,u
+
+" For the window with buffer 1, use +/- for increasing and decreasing the
+" window split
+if bufwinnr(1)
+    nnoremap + <C-W>+
+    nnoremap - <C-W>-
+endif
+
+" Jump to last known cursor position when opening a file
+" (:help last-position-jump)
+au BufReadPost *
+  \ if line("'\"") > 0 && line("'\"") <= line("$") |
+  \   exe "normal g`\"" |
+  \ endif
+
+" Set file extensions that should be treated as certain filetypes
+" https://vim.fandom.com/wiki/Forcing_Syntax_Coloring_for_files_with_odd_extensions
+au BufRead,BufNewFile *.\(ut\) setlocal filetype=cpp
+au BufRead,BufNewFile *.\(smf\) set syntax=cpp
+" Treat Dockerfile's with extensions as dockerfile
+au BufRead,BufNewFile Dockerfile.* set syntax=dockerfile
+
+" Define any custom filetypes
+au BufNewFile,BufRead /tmp/tmp.[0-9]*.* set filetype=p4change
+
+" text formatting
+" format numbered lists
+au FileType text setlocal fo+=n
+" 3 spaces for tabs
+au FileType text setlocal ts=3
+
+" p4 change formatting
+" Use conf syntax
+au FileType p4change setlocal syntax=conf
+" Use tabs
+au FileType p4change setlocal noexpandtab
+" format numbered lists
+au FileType p4change setlocal fo+=n
+
+" python formatting
+" Continue comment leader onto next like in insert mode after <enter>
+" or 'o'/'O' in normal mode.
+au FileType python setlocal fo+=ro
+
+" shell formatting
+" Continue comment leader onto next like in insert mode after <enter>
+" or 'o'/'O' in normal mode.
+au FileType sh setlocal fo+=ro
+
+" cmake formatting
+" Continue comment leader onto next like in insert mode after <enter>
+" or 'o'/'O' in normal mode.
+au FileType cmake setlocal fo+=ro
+" Two space indentation
+au Filetype cmake setlocal shiftwidth=2
+
+" Common C/C++ formatting
+" Place case label at same indentation as switch and autoindent
+" after case statements.
+au Filetype c,cpp setlocal cinoptions+=:0 cinwords+=case
+" Make open ( indents line up with next non-white char after (
+au Filetype c,cpp setlocal cinoptions+=(0
+
+" C formatting
+" Per Linux/FreeBSD kernel style, use true tabs for indent
+au Filetype c setlocal ts=8 shiftwidth=8 noexpandtab
+
+" C++ formatting
+" Four space indent, no true tabs
+au Filetype cpp setlocal ts=8 shiftwidth=4 expandtab
+
+" protobuf formatting
+" Based on:
+" https://developers.google.com/protocol-buffers/docs/style
+au Filetype proto setlocal shiftwidth=2 smartindent
+
+" yaml formatting
+au Filetype yaml setlocal shiftwidth=2
+
+" F1 is used as a help shortcut for Gnome terminal
+
+" Use F2 to toggle the highlight of the search term
+" whether in command or insert mode
+set nohlsearch
+map <silent> <F2> :set hlsearch!<CR>
+imap <silent> <F2> <ESC>:set hlsearch!<CR>a
+
+" Use F3 to toggle showing line numbers
+map <F3> :set nu!<CR>
+
+" Enter mode to paste pre-formatted text
+map <F4> :set paste!<CR>
+
+" List trailing whitespace when toggled on
+set listchars=tab:>-,trail:.,eol:$
+nmap <silent> <F5> :set nolist!<CR>
+
+" Highlight trailing white space in C code
+" http://vim.wikia.com/wiki/Highlight_unwanted_spaces
+highlight ExtraWhitespace ctermbg=red guibg=red
+"match ExtraWhitespace /\s\+$/
+":nnoremap <Leader>wn :match ExtraWhitespace /^\s* \s*\<Bar>\s\+$/<CR>
+:nnoremap <Leader>wn :match ExtraWhitespace /\s\+$/<CR>
+:nnoremap <Leader>wf :match<CR>
+
+" Set C syntax
+nnoremap <silent> <F9> :set syntax=c<CR>:set cindent<CR>
+
+" Set CPP syntax
+:nnoremap <Leader>cpp :set syntax=cpp<CR>
+
+" Use :buffers to display buffers and :bd to delete (close) the
+" current buffer or specify a number to delete a specific buffer 
+" (you can do ":n,mbd" to delete buffers from [n,m]).
+" Use :e <file> to open a new buffer.
+
+" right arrow (normal mode) switches buffers
+map <right> <ESC>:bn<RETURN> 
+" left arrow (normal mode) switches buffers
+map <left> <ESC>:bp<RETURN> 
+
+" Map moving up and down a window
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+
+" Mappings to automatically put up search and replace.
+" Use the non-recursive mapping.
+noremap ;; :%s///g<Left><Left><Left>
+noremap ;' :%s///gc<Left><Left><Left><Left>
+noremap ;a :'a,.s///g<Left><Left><Left>
+noremap ;c :'a,.s///gc<Left><Left><Left><Left>
+
+" Show the function name for the given line.
+function! ShowFuncName()
+  let lnum = line(".")
+  let col = col(".")
+  echohl ModeMsg
+  echo getline(search("^[^ \t#/]\\{2}.*[^:]\s*$", 'bW'))
+  echohl None
+  call search("\\%" . lnum . "l" . "\\%" . col . "c")
+endfun
+map ;f :call ShowFuncName() <CR>
+
+" Delete the buffer; keep windows.
+function! Kwbd_internal(kwbdStage)
+  if(a:kwbdStage == 1)
+    let g:kwbdBufNum = bufnr("%")
+    let g:kwbdWinNum = winnr()
+    windo call Kwbd_internal(2)
+    execute "bd! " . g:kwbdBufNum
+    execute "normal " . g:kwbdWinNum . ""
+  else
+    if(bufnr("%") == g:kwbdBufNum)
+      let prevbufvar = bufnr("#")
+      if(prevbufvar > 0 && buflisted(prevbufvar) && prevbufvar != g:kwbdBufNum)
+        b #
+      else
+        bn
+      endif
+    endif
+  endif
+endfunction
+com! Kwbd call Kwbd_internal(1)
+
+" Already opened files should be open read-only by default.
+func! CheckSwap()
+  swapname
+  if v:statusmsg =~ '\.sw[^p]$'
+    set ro
+  endif
+endfunc
+
+if &swf
+  set shm+=A
+  au BufReadPre * call CheckSwap()
+endif
