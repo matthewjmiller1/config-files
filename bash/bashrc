@@ -74,6 +74,10 @@ export PS1="\h$ "
 # Make ls show colors
 if [[ "$OSTYPE" == "darwin"* ]]; then
     export CLICOLOR=1
+    if command -v gls &> /dev/null; then
+        eval $(gdircolors)
+        alias ls="gls --color=auto"
+    fi
 fi
 
 ### End environment variables ###
