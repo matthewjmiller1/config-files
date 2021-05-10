@@ -44,10 +44,15 @@ export PATH=$PATH:.
 
 ### End PATH setup ###
 
-# Enable bash completion, if available
-export BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"
-[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && \
-    . "/usr/local/etc/profile.d/bash_completion.sh"
+# Enable bash completion, if available.
+# Check if BASH_COMPLETION_COMPAT_DIR is read-only by attempting to unset it in
+# a subshell and checking the return code (non-zero means it could be unset and,
+# hence, is not read-only).
+if (unset BASH_COMPLETION_COMPAT_DIR 2> /dev/null); then
+    export BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"
+    [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && \
+        . "/usr/local/etc/profile.d/bash_completion.sh"
+fi
 
 # Enable kubectl auto completion, if kubectl exists
 if command -v kubectl &> /dev/null; then
