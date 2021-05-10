@@ -16,7 +16,8 @@ set -o noclobber
 set -o ignoreeof
 
 # Disable core dumps (use "-c unlimited" to enable)
-ulimit -c 0
+# Set as a soft limit (-S) so it can be increased later as needed.
+ulimit -S -c 0
 
 # Use -u to unset shopt's
 # Enable aliases for non-interactive shells
