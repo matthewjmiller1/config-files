@@ -4,8 +4,9 @@
 let s:configure_ctrlp = 0
 let s:configure_md_preview = 0
 
-" Uses vim-plug as a plugin manager, if it is installed
-if !empty(glob('~/.vim/autoload/plug.vim'))
+" Uses vim-plug as a plugin manager, if it is installed.
+" This relies on git being installed.
+if !empty(glob('~/.vim/autoload/plug.vim')) && executable('git')
     " This uses vim-plug as a plugin manager:
     " https://github.com/junegunn/vim-plug
     "
