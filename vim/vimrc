@@ -253,58 +253,31 @@ au Filetype proto setlocal shiftwidth=2 smartindent
 " yaml formatting
 au Filetype yaml setlocal shiftwidth=2
 
-" F1 is used as a help shortcut for Gnome terminal
-
-" Use F2 to toggle the highlight of the search term
-" whether in command or insert mode
+" Toggle the highlight of the search term
 set nohlsearch
-map <silent> <F2> :set hlsearch!<CR>
-imap <silent> <F2> <ESC>:set hlsearch!<CR>a
+nnoremap <silent> ,h :set hlsearch!<CR>
 
-" Use F3 to toggle showing line numbers
-map <F3> :set nu!<CR>
+" Toggle showing line numbers
+nnoremap ,n :set nu!<CR>
 
 " Enter mode to paste pre-formatted text
-map <F4> :set paste!<CR>
-
-" List trailing whitespace when toggled on
-set listchars=tab:>-,trail:.,eol:$
-nmap <silent> <F5> :set nolist!<CR>
+nnoremap ,p :set paste!<CR>
 
 " Highlight trailing white space in C code
 " http://vim.wikia.com/wiki/Highlight_unwanted_spaces
 highlight ExtraWhitespace ctermbg=red guibg=red
-"match ExtraWhitespace /\s\+$/
-":nnoremap <Leader>wn :match ExtraWhitespace /^\s* \s*\<Bar>\s\+$/<CR>
-:nnoremap <Leader>wn :match ExtraWhitespace /\s\+$/<CR>
-:nnoremap <Leader>wf :match<CR>
+" 'Whitespace show'
+nnoremap ,ws :match ExtraWhitespace /\s\+$/<CR>
+" 'Whitespace clear'
+nnoremap ,wc :match<CR>
 
 " Set C syntax
-nnoremap <silent> <F9> :set syntax=c<CR>:set cindent<CR>
+" 'C file': use the 'f' to disambiguate from ,cpp so there is no delay
+" in applying the command.
+nnoremap <silent> ,cf :set syntax=c<CR>:set cindent<CR>
 
-" Set CPP syntax
-:nnoremap <Leader>cpp :set syntax=cpp<CR>
-
-" Use :buffers to display buffers and :bd to delete (close) the
-" current buffer or specify a number to delete a specific buffer 
-" (you can do ":n,mbd" to delete buffers from [n,m]).
-" Use :e <file> to open a new buffer.
-
-" right arrow (normal mode) switches buffers
-map <right> <ESC>:bn<RETURN> 
-" left arrow (normal mode) switches buffers
-map <left> <ESC>:bp<RETURN> 
-
-" Map moving up and down a window
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-
-" Mappings to automatically put up search and replace.
-" Use the non-recursive mapping.
-noremap ;; :%s///g<Left><Left><Left>
-noremap ;' :%s///gc<Left><Left><Left><Left>
-noremap ;a :'a,.s///g<Left><Left><Left>
-noremap ;c :'a,.s///gc<Left><Left><Left><Left>
+" Set C++ syntax
+nnoremap <silent> ,cpp :set syntax=cpp<CR>
 
 " Show the function name for the given line.
 function! ShowFuncName()
@@ -315,7 +288,28 @@ function! ShowFuncName()
   echohl None
   call search("\\%" . lnum . "l" . "\\%" . col . "c")
 endfun
-map ;f :call ShowFuncName() <CR>
+nnoremap ,f :call ShowFuncName()<CR>
+
+" Use :buffers to display buffers and :bd to delete (close) the
+" current buffer or specify a number to delete a specific buffer 
+" (you can do ":n,mbd" to delete buffers from [n,m]).
+" Use :e <file> to open a new buffer.
+
+" right arrow (normal mode) switches buffers
+nnoremap <right> <ESC>:bn<CR> 
+" left arrow (normal mode) switches buffers
+nnoremap <left> <ESC>:bp<CR> 
+
+" Map moving up and down a window
+nnoremap <C-j> <C-W>j
+nnoremap <C-k> <C-W>k
+
+" Mappings to automatically put up search and replace.
+" Use the non-recursive mapping.
+noremap ;; :%s///g<Left><Left><Left>
+noremap ;' :%s///gc<Left><Left><Left><Left>
+noremap ;a :'a,.s///g<Left><Left><Left>
+noremap ;c :'a,.s///gc<Left><Left><Left><Left>
 
 " Delete the buffer; keep windows.
 function! Kwbd_internal(kwbdStage)
