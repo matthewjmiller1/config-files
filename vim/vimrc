@@ -197,6 +197,7 @@ au BufRead,BufNewFile *.\(smf\) set syntax=cpp
 au BufRead,BufNewFile Dockerfile.* set syntax=dockerfile
 " Treat gitconfig's with extensions as gitconfig
 au BufRead,BufNewFile gitconfig* setlocal filetype=gitconfig
+au BufRead,BufNewFile .gitconfig* setlocal filetype=gitconfig
 
 " Define any custom filetypes
 au BufNewFile,BufRead /tmp/tmp.[0-9]*.* set filetype=p4change
