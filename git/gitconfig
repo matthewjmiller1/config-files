@@ -3,14 +3,27 @@
 [core]
 	# Disable pagination for all commands by default
 	pager = cat
+	# Default editor
+	editor = vim
 [alias]
 	# Pure shortcuts
-        br = branch
-        ci = commit
+	br = branch
+	ci = commit
 	co = checkout
-        df = diff
+	df = diff
+	s = status
+	# push origin main
+	pom = push origin main
+	# pull ("get") origin main
+	gom = pull origin main
+	# Create a new branch and check it out
+	cob = checkout -b
+	# Delete a branch
+	del = checkout -D
 	# Show status in short format with branch info
-        st = status -sb
+	st = status -sb
+	# Unstage files
+	unstage = reset HEAD --
 	# List git aliases
 	alias = config --get-regexp ^alias\\.
 	# Various ways of showing repo history
