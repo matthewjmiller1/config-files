@@ -1,0 +1,6 @@
+[include]
+	path = .gitconfig_env
+[alias]
+	co = checkout
+[pull]
+	ff = only

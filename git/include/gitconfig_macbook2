@@ -1,0 +1,5 @@
+[user]
+	name = Matt Miller
+	email = mattmiller1@gmail.com
+[credential]
+	helper = store
