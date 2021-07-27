@@ -195,6 +195,8 @@ au BufRead,BufNewFile *.\(ut\) setlocal filetype=cpp
 au BufRead,BufNewFile *.\(smf\) set syntax=cpp
 " Treat Dockerfile's with extensions as dockerfile
 au BufRead,BufNewFile Dockerfile.* set syntax=dockerfile
+" Treat gitconfig's with extensions as gitconfig
+au BufRead,BufNewFile gitconfig* setlocal filetype=gitconfig
 
 " Define any custom filetypes
 au BufNewFile,BufRead /tmp/tmp.[0-9]*.* set filetype=p4change
@@ -229,6 +231,14 @@ au FileType sh setlocal fo+=ro
 au FileType cmake setlocal fo+=ro
 " Two space indentation
 au Filetype cmake setlocal shiftwidth=2
+
+" gitconfig formatting
+" A tab is equal to 8 spaces
+au Filetype gitconfig setlocal tabstop=8
+" Indendation is 8 spaces
+au Filetype gitconfig setlocal shiftwidth=8
+" Use true tabs
+au Filetype gitconfig setlocal noexpandtab
 
 " Common C/C++ formatting
 " Place case label at same indentation as switch and autoindent
