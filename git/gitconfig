@@ -1,6 +1,23 @@
 [include]
 	path = .gitconfig_env
+[core]
+	# Disable pagination for all commands by default
+	pager = cat
 [alias]
+	# Pure shortcuts
+        br = branch
+        ci = commit
 	co = checkout
+        df = diff
+	# Show status in short format with branch info
+        st = status -sb
+	# List git aliases
+	alias = config --get-regexp ^alias\\.
+	# Various ways of showing repo history
+	hist = log --pretty=tformat:\"%h %ad | %s%d [%an]\" --graph --date=short
+	lg = log --graph --pretty=tformat:'%h -%d %s (%cr) <%an>' --abbrev-commit --date=relative
+	one = log --pretty=oneline --abbrev-commit 
+	last = log -1 HEAD
 [pull]
+	# Equivalent of --ff-only option
 	ff = only
