@@ -14,7 +14,7 @@
 	s = status
 	# push origin main
 	pom = push origin main
-	# pull ("get") origin main
+	# pull (mnemonic="get") origin main
 	gom = pull origin main
 	# Create a new branch and check it out
 	cob = checkout -b
