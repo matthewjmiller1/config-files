@@ -198,7 +198,7 @@ function findtshark {
     for i in $(find ${1} \( -type f -or -type l \) -name "${2}" -follow);
     do
     echo "***** $i *****";
-    tshark -n -t ad -r $i -R "${3}"
+    tshark -n -t ad -r $i -Y "${3}"
     echo "**************";
     done; 
 };
