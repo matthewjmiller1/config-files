@@ -11,6 +11,7 @@
 	ci = commit
 	co = checkout
 	df = diff
+	dfc = diff --cached
 	s = status
 	# push origin main
 	pom = push origin main
