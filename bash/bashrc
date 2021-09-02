@@ -95,9 +95,13 @@ alias cp='cp -i'
 alias rm='rm -i'
 alias mv='mv -i'
 
+# ls aliases
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     alias ls='ls --color=auto'
 fi
+alias ll='ls -l'
+alias llh='ls -lh'
+alias lls='ls -lhS'
 
 # Command shortcuts
 
@@ -125,27 +129,6 @@ fi
 
 if command -v minikube &> /dev/null; then
     alias mk="minikube"
-fi
-
-# Git aliases
-if command -v git &> /dev/null; then
-    alias ga='git add'
-    alias gp='git push'
-    alias gl='git log'
-    alias gl='git log --pretty=format:"%h%x09%an%x09%ad%x09%s"'
-    alias gl2='git log --pretty=oneline --abbrev-commit'
-    alias gs='git status'
-    alias gd='git diff'
-    alias gdc='git diff --cached'
-    alias gm='git commit -m'
-    alias gma='git commit -am'
-    alias gb='git branch'
-    alias gc='git checkout'
-    alias gra='git remote add'
-    alias grr='git remote rm'
-    alias gpu='git pull'
-    alias gcl='git clone'
-    alias gsb='git show-branch'
 fi
 
 alias vncstart="vncserver -pn -depth 24 -alwaysshared \
