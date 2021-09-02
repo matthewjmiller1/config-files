@@ -23,6 +23,8 @@
 	del = checkout -D
 	# Show status in short format with branch info
 	st = status -sb
+        # Rebase from the remote
+        pr = pull --rebase
 	# Unstage files
 	unstage = reset HEAD --
 	# List git aliases
