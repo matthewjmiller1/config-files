@@ -274,6 +274,11 @@ nnoremap ,n :set nu!<CR>
 " Enter mode to paste pre-formatted text
 nnoremap ,p :set paste!<CR>
 
+" Copy file name or full path to clipboard
+" https://vim.fandom.com/wiki/Copy_filename_to_clipboard
+nnoremap ,cs :let @*=expand("%")<CR>
+nnoremap ,cl :let @*=expand("%:p")<CR>
+
 " Highlight trailing white space in C code
 " http://vim.wikia.com/wiki/Highlight_unwanted_spaces
 highlight ExtraWhitespace ctermbg=red guibg=red
