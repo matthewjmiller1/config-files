@@ -6,14 +6,4 @@
 
 ### Begin environment variables ###
 
-# Setup restic env vars
-PW_FILE="$HOME/Documents/backup_scripts/restic_passwd.txt"
-REPO_FILE="$HOME/Documents/backup_scripts/web_restic_repo.txt"
-if test -f "$PW_FILE"; then
-    export RESTIC_PASSWORD_FILE=$PW_FILE
-fi
-if test -f "$REPO_FILE"; then
-    export RESTIC_REPOSITORY_FILE=$REPO_FILE
-fi
-
 ### End environment variables ###
