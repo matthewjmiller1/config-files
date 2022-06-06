@@ -348,6 +348,11 @@ function! Kwbd_internal(kwbdStage)
 endfunction
 com! Kwbd call Kwbd_internal(1)
 
+" Copied from ':h :DiffOrig'. Can be used to diff :recover operations from
+" swap files.
+command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_
+  \ | diffthis | wincmd p | diffthis
+
 " Already opened files should be open read-only by default.
 func! CheckSwap()
   swapname
