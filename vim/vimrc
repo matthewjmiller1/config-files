@@ -175,10 +175,6 @@ set wildmenu
 " and unloaded buffers in the buffer list.
 set complete=.,w,b,u
 
-" Set shellcmdflag to include interactive to be able to, e.g.,
-" run functions from .bashrc.
-set shellcmdflag=-ic
-
 " For the window with buffer 1, use +/- for increasing and decreasing the
 " window split
 if bufwinnr(1)
