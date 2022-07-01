@@ -193,6 +193,7 @@ au BufReadPost *
 " https://vim.fandom.com/wiki/Forcing_Syntax_Coloring_for_files_with_odd_extensions
 au BufRead,BufNewFile *.\(ut\) setlocal filetype=cpp
 au BufRead,BufNewFile *.\(smf\) set syntax=cpp
+au BufRead,BufNewFile *.\(dox\) set syntax=cpp
 " Treat Dockerfile's with extensions as dockerfile
 au BufRead,BufNewFile Dockerfile.* set syntax=dockerfile
 " Treat gitconfig's with extensions as gitconfig
