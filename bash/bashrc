@@ -109,6 +109,10 @@ if command -v vim &> /dev/null; then
     alias vi='vim'
 fi
 
+if command -v black &> /dev/null; then
+    alias black='black --line-length=80'
+fi
+
 if command -v tshark &> /dev/null; then
     alias ts_fields="tshark -E header=y -T fields -e frame.number -e frame.time_relative -e ip.src -e ip.dst -e tcp.srcport -e tcp.dstport -e tcp.seq -e tcp.ack -e tcp.len -e tcp.nxtseq -e tcp.window_size -e tcp.flags "
 fi
