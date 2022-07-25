@@ -183,6 +183,11 @@ function vnckill {
     vncserver -kill :${1}; 
 };
 
+# To do ripgrep and exclude a directory:
+# rg -g '!**/test/*' some_string foo/bar
+# Will search for some_string in foo/bar, excluding any test/ subdirectories
+# from the search.
+
 # Use: findgrep path "*.h" my_string
 # To find an object location in makefiles, use:
 # findgrep "make*" "object_name\.o"
