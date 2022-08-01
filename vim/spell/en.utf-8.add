@@ -9,3 +9,8 @@ async
 IPC
 ipc
 bool
+namespace
+templated
+errno
+gRPC
+req
