@@ -321,6 +321,17 @@ function! ShowFuncName()
 endfun
 nnoremap ,f :call ShowFuncName()<CR>
 
+" Jump to function {'s even if they're not in the first column (e.g, C++ class)
+" https://stackoverflow.com/a/50598425
+" Jump to the previous function
+nnoremap <silent> [f :call
+\ search('\(\(if\\|for\\|while\\|switch\\|catch\)\_s*\)\@64<!(\_[^)]*)\_[^;{}()]*\zs{', "bw")<CR>
+" nnoremap <silent> [f :call search('^\s*\(\i\+\_[ \t\*]\+\)\+\i\+\_s*(\_[^)]*)\_s*{', "bw")<CR>
+" Jump to the next function
+nnoremap <silent> ]f :call
+\ search('\(\(if\\|for\\|while\\|switch\\|catch\)\_s*\)\@64<!(\_[^)]*)\_[^;{}()]*\zs{', "w")<CR>
+" nnoremap <silent> ]f :call search('^\s*\(\i\+\_[ \t\*]\+\)\+\i\+\_s*(\_[^)]*)\_s*{', "w")<CR>
+
 " Use :buffers to display buffers and :bd to delete (close) the
 " current buffer or specify a number to delete a specific buffer 
 " (you can do ":n,mbd" to delete buffers from [n,m]).
