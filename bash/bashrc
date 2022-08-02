@@ -18,6 +18,9 @@ set -o ignoreeof
 # Disable core dumps (use "-c unlimited" to enable)
 # Set as a soft limit (-S) so it can be increased later as needed.
 ulimit -S -c 0
+# To add PIDs to core name:
+# sudo sh -c 'sysctl -w kernel.core_uses_pid=1 >> /etc/sysctl.d/core.conf'
+# cat /proc/sys/kernel/core_uses_pid
 
 # Use -u to unset shopt's
 # Enable aliases for non-interactive shells
