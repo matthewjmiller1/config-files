@@ -180,6 +180,11 @@ fi
 
 # To use xargs with a bash function:
 # ls | grep "dir/" | xargs bash -c '<function> "$@"' _
+# Use '-ic' for an interactive shell if using, e.g., functions defined in
+# .bashrc or a startup file. Environment variables are inherited by the
+# non-interactive shell invoked in that manner, but functions are not. Functions
+# can be exported via "export -f <name>" or "typeset -xf <name>" in recent
+# versions of bash.
 
 # Kill a vnc session
 function vnckill { 
