@@ -129,6 +129,12 @@ if !empty(glob(s:spellfile_path))
     let &spellfile=s:spellfile_path
 endif
 
+" Change capitalization color to one that doesn't hide with the blue font.
+" Use ':verbose highlight SpellCap' to see the highlight setting for this.
+" Others are SpellBad, SpellRare, and SpellLocal.
+" ctermbg=3 is a brownish color.
+hi SpellCap ctermbg=3
+
 " Continue the previous line's indentation
 set autoindent
 
