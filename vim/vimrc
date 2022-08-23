@@ -238,6 +238,9 @@ au FileType p4change setlocal fo+=n
 " Continue comment leader onto next like in insert mode after <enter>
 " or 'o'/'O' in normal mode.
 au FileType python setlocal fo+=ro
+" Change SpellBad color to one that doesn't hide with the red string font.
+" ctermbg=2 is a greenish color.
+au FileType python hi SpellBad ctermbg=2
 
 " shell formatting
 " Continue comment leader onto next like in insert mode after <enter>
