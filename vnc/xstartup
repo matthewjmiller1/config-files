@@ -1,18 +1,14 @@
 #!/bin/sh
 
-# This is needed for copy+paste to work in some environments
-vncconfig -nowin &
+# Copied from:
+# https://bytexd.com/how-to-install-configure-vnc-server-on-ubuntu/
 
-# The below is the default generated xstartup file when vncserver
-# (tigervnc-server) was run on RHEL7.9.
-
+# Start up the standard system desktop
 unset SESSION_MANAGER
 unset DBUS_SESSION_BUS_ADDRESS
-/etc/X11/xinit/xinitrc
-# Assume either Gnome or KDE will be started by default when installed
-# We want to kill the session automatically in this case when user logs out. In case you modify
-# /etc/X11/xinit/Xclients or ~/.Xclients yourself to achieve a different result, then you should
-# be responsible to modify below code to avoid that your session will be automatically killed
-if [ -e /usr/bin/gnome-session -o -e /usr/bin/startkde ]; then
-    vncserver -kill $DISPLAY
-fi
+
+/usr/bin/startxfce4
+
+[ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup
+[ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources
+x-window-manager &
