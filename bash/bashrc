@@ -143,7 +143,7 @@ if command -v minikube &> /dev/null; then
 fi
 
 alias vncstart="vncserver -pn -depth 24 -alwaysshared \
-    -geometry 1200x850"
+    -geometry 1200x850 -localhost no"
 
 alias sshpasswd="ssh-keygen -p"
 
