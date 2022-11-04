@@ -55,10 +55,17 @@ export PATH=$PATH:.
 # a subshell and checking the return code (non-zero means it could be unset and,
 # hence, is not read-only).
 if (unset BASH_COMPLETION_COMPAT_DIR 2> /dev/null); then
-    export BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"
+    __BASH_COMPLETION_D="/usr/local/etc/bash_completion.d"
+    __BASH_COMPLETION_SH="/usr/local/etc/profile.d/bash_completion.sh"
+
+    if [[ -f "$__BASH_COMPLETION_D" ]]; then
+        export BASH_COMPLETION_COMPAT_DIR="$__BASH_COMPLETION_D"
+    fi
+
     # shellcheck disable=SC1091
-    [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && \
-        . "/usr/local/etc/profile.d/bash_completion.sh"
+    [[ -r "$__BASH_COMPLETION_SH" ]] && . "$__BASH_COMPLETION_SH"
+
+    unset __BASH_COMPLETION_D __BASH_COMPLETION_SH
 fi
 
 ### Begin environment variables ###
