@@ -28,6 +28,15 @@ shopt -s expand_aliases
 # Append current history to $HISTFILE rather than overwriting
 shopt -s histappend
 
+# If the direxpand option exists in this version of bash, then enable it.
+# This will expand directory paths in environment variables on tab completion
+# (e.g., "ls $HOME" will expand to the home directory path on tab completion).
+__SHOPT_ERR=$(shopt -q direxpand 2>&1 > /dev/null)
+if [ -z "$__SHOPT_ERR" ]; then
+    shopt -s direxpand
+fi
+unset __SHOPT_ERR
+
 # Clear existing aliases
 unalias -a
 
