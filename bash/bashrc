@@ -61,12 +61,6 @@ if (unset BASH_COMPLETION_COMPAT_DIR 2> /dev/null); then
         . "/usr/local/etc/profile.d/bash_completion.sh"
 fi
 
-# Enable kubectl auto completion, if kubectl exists
-if command -v kubectl &> /dev/null; then
-    # shellcheck disable=SC1090
-    source <(kubectl completion bash)
-fi
-
 ### Begin environment variables ###
 
 # Write each comand to $HISTFILE instead of waiting until exit
@@ -124,8 +118,12 @@ if command -v tshark &> /dev/null; then
     alias ts_fields="tshark -E header=y -T fields -e frame.number -e frame.time_relative -e ip.src -e ip.dst -e tcp.srcport -e tcp.dstport -e tcp.seq -e tcp.ack -e tcp.len -e tcp.nxtseq -e tcp.window_size -e tcp.flags "
 fi
 
+# If kubectl exists, set up aliases and auto-completion
 if command -v kubectl &> /dev/null; then
     alias k="kubectl"
+    # Enable kubectl auto-completion, if kubectl exists
+    # shellcheck disable=SC1090
+    source <(kubectl completion bash)
     # Allow kubectl auto-complete to work with the alias
     complete -F __start_kubectl k
 fi
