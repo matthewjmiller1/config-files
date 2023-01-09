@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ -n "${DO_LEGACY_VNC}" ]; then
+if [ -z "${DO_LEGACY_VNC}" ]; then
     # Based on:
     # https://bytexd.com/how-to-install-configure-vnc-server-on-ubuntu/
 
