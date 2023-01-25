@@ -185,11 +185,31 @@ if command -v global &> /dev/null; then
     alias gtc="global -c"
 fi
 
+# Ansible aliases
+if command -v ansible &> /dev/null; then
+    alias ans="ansible"
+fi
+
+if command -v ansible-playbook &> /dev/null; then
+    alias ans_p="ansible-playbook"
+fi
+
+if command -v ansible-inventory &> /dev/null; then
+    alias ans_i="ansible-inventory"
+fi
+
 # Docker aliases
 if command -v docker &> /dev/null; then
     alias dk_rm_dangling='docker rmi $(docker images -f "dangling=true" -q)'
     alias dk_rm_exited='docker rm $(docker ps -a -f status=exited -q)'
     alias dk_rm_stopped='docker rm $(docker ps -a -f status=stopped -q)'
+fi
+
+if command -v strace &> /dev/null; then
+    # -f = follow forks
+    # -tt = absolute timestamps with usecs
+    # -v = verbose mode
+    alias strace2="strace -f -tt -v"
 fi
 
 ### End aliases ###
