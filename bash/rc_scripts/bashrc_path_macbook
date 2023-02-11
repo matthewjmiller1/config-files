@@ -26,5 +26,11 @@ if [ -d "$RUBY_DIR" ]; then
     export PATH=$RUBY_DIR:$PATH
 fi
 
+# Location of ruby gems installed by brew
+RUBY_GEMS_DIR=/usr/local/lib/ruby/gems/3.2.0/bin
+if [ -d "$RUBY_GEMS_DIR" ]; then
+    export PATH=$RUBY_GEMS_DIR:$PATH
+fi
+
 export PATH=/usr/local/bin:$PATH
 export PATH=/usr/local/sbin:$PATH
