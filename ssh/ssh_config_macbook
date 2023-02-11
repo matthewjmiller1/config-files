@@ -1,4 +1,4 @@
-Host *.mattandleighann.com
+Host mattandleighann.com
     # Files to use for authentication
     IdentityFile ~/.ssh/id_ed25519_dreamhost
 
