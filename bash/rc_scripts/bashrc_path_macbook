@@ -14,12 +14,6 @@ if [ -d "$RUST_DIR" ]; then
     export PATH=$RUST_DIR:$PATH
 fi
 
-# Put this before /usr/bin/ so python defaults to python3
-PYTHON_DIR=/usr/local/opt/python/libexec/bin
-if [ -d "$PYTHON_DIR" ]; then
-    export PATH=$PYTHON_DIR:$PATH
-fi
-
 # Put this before /usr/bin/ to use the brew installed ruby
 RUBY_DIR=/usr/local/opt/ruby/bin
 if [ -d "$RUBY_DIR" ]; then
@@ -40,3 +34,11 @@ fi
 
 export PATH=/usr/local/bin:$PATH
 export PATH=/usr/local/sbin:$PATH
+
+if command -v brew &> /dev/null; then
+    # Put this before /usr/bin/ so python defaults to python3
+    PYTHON_DIR=$(brew --prefix python)/libexec/bin
+    if [ -d "$PYTHON_DIR" ]; then
+        export PATH=$PYTHON_DIR:$PATH
+    fi
+fi
