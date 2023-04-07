@@ -71,6 +71,7 @@ if (unset BASH_COMPLETION_COMPAT_DIR 2> /dev/null); then
         export BASH_COMPLETION_COMPAT_DIR="$__BASH_COMPLETION_D"
     fi
 
+    # shellcheck disable=SC1090
     # shellcheck disable=SC1091
     [[ -r "$__BASH_COMPLETION_SH" ]] && . "$__BASH_COMPLETION_SH"
 
@@ -228,6 +229,27 @@ fi
 function vnckill { 
     vncserver -kill :"${1}"; 
 };
+
+if command -v python &> /dev/null; then
+    function js_lint { 
+        python -m json.tool "${1}" /dev/null
+    };
+
+    function js_fmt { 
+        local ORIG_FILE="${1}"
+        local FMT_FILE="${1}.fmt"
+        local TMP_FILE
+
+        TMP_FILE=$(mktemp /tmp/js_fmt-XXXXX)
+
+        if python -m json.tool "$ORIG_FILE" "$FMT_FILE";
+        then
+            /bin/cp "$ORIG_FILE" "$TMP_FILE"
+            /bin/cp "$FMT_FILE" "$ORIG_FILE"
+        fi
+        /bin/rm "$FMT_FILE"
+    };
+fi
 
 # To do ripgrep and exclude a directory:
 # rg -g '!**/test/*' some_string foo/bar
