@@ -212,13 +212,13 @@ au BufRead,BufNewFile *.\(ut\) setlocal filetype=cpp
 au BufRead,BufNewFile *.\(smf\) setlocal filetype=cpp
 au BufRead,BufNewFile *.\(dox\) setlocal filetype=cpp
 " Treat Dockerfile's with extensions as dockerfile
-au BufRead,BufNewFile Dockerfile.* set syntax=dockerfile
+au BufRead,BufNewFile Dockerfile.* setlocal syntax=dockerfile
 " Treat gitconfig's with extensions as gitconfig
 au BufRead,BufNewFile gitconfig* setlocal filetype=gitconfig
 au BufRead,BufNewFile .gitconfig* setlocal filetype=gitconfig
 
 " Define any custom filetypes
-au BufNewFile,BufRead /tmp/tmp.[0-9]*.* set filetype=p4change
+au BufNewFile,BufRead /tmp/tmp.[0-9]*.* setlocal filetype=p4change
 
 " text formatting
 " format numbered lists
@@ -317,10 +317,10 @@ nnoremap ,wc :match<CR>
 " Set C syntax
 " 'C file': use the 'f' to disambiguate from ,cpp so there is no delay
 " in applying the command.
-nnoremap <silent> ,cf :set syntax=c<CR>:set cindent<CR>
+nnoremap <silent> ,cf :set syntax=c<CR>:setlocal filetype=c<CR>
 
 " Set C++ syntax
-nnoremap <silent> ,cpp :set syntax=cpp<CR>
+nnoremap <silent> ,cpp :set syntax=cpp<CR>:setlocal filetype=cpp<CR>
 
 " Turn on spell check
 nnoremap ,sp :setlocal spell!<CR>
