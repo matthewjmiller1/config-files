@@ -40,6 +40,9 @@ if !empty(glob('~/.vim/autoload/plug.vim')) && executable('git')
     Plug 'JamshedVesuna/vim-markdown-preview'
     let s:configure_md_preview = 1
 
+    " Jsonnet syntax highlighting
+    Plug 'google/vim-jsonnet'
+
     " List ends here. Plugins become visible to Vim after this call.
     " Automatically sets 'filetype plugin indent on' and 'syntax enable'
     call plug#end()
@@ -52,6 +55,13 @@ else
         let s:configure_ctrlp = 1
         " Prepend the plugin to the runtimepath option
         let &runtimepath=s:ctrlp_local_path . ',' . &runtimepath
+    endif
+
+    " jsonnet-vim
+    let s:jsonnet_local_path = '~/.vim/bundle/jsonnet-vim'
+    if !empty(glob(s:jsonnet_local_path))
+        " Prepend the plugin to the runtimepath option
+        let &runtimepath=s:jsonnet_local_path . ',' . &runtimepath
     endif
 endif
 
