@@ -272,6 +272,10 @@ au Filetype gitconfig setlocal shiftwidth=8
 " Use true tabs
 au Filetype gitconfig setlocal noexpandtab
 
+" jsonnet formatting
+" Two space indentation
+au Filetype jsonnet setlocal shiftwidth=2
+
 " Common C/C++ formatting
 " Place case label at same indentation as switch and autoindent
 " after case statements.
