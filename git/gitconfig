@@ -19,6 +19,10 @@
 	pom = push origin main
 	# pull (mnemonic="get") origin main
 	gom = pull origin main
+	# push proxy work
+	ppw = push proxy work
+	# pull (mnemonic="get") proxy work
+	gpw = pull proxy work
 	# Create a new branch and check it out
 	cob = checkout -b
 	# Delete a branch
