@@ -1,4 +1,5 @@
 all
+exclude_rule 'MD026'
 exclude_rule 'MD031'
 exclude_rule 'MD033'
 rule 'MD007', :indent => 4
