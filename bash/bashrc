@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # vim: syntax=sh
 # vim: filetype=sh
 
@@ -105,6 +106,32 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 fi
 
 ### End environment variables ###
+
+### Begin Python venv setup  ###
+
+if command -v python &> /dev/null; then
+    # Disable the venv addition to the bash prompt
+    export VIRTUAL_ENV_DISABLE_PROMPT=1
+
+    PYVENV_PATH="$HOME/.local/pyvenvs"
+    PYVENV_DEFAULT="main"
+
+    function pyvenv { 
+        # shellcheck disable=SC1090
+        source "$PYVENV_PATH/${1}/bin/activate";
+    };
+
+    function pyvenv_upgrade { 
+        python -m venv --upgrade --upgrade-deps "${1}"
+    };
+
+    # Set the default venv
+    if test -e "$PYVENV_PATH/$PYVENV_DEFAULT"; then
+        pyvenv "$PYVENV_DEFAULT"
+    fi
+fi
+
+### End Python venv setup  ###
 
 ### Begin aliases ###
 
