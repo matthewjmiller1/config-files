@@ -464,14 +464,12 @@ function i2h {
 # add two hex numbers
 function hexadd {
     local DECVAL1=${1}
-    # shellcheck disable=SC2003
-    if [ "$(expr index "${1}" 0x)" == 1 ]
+    if [[ "${1}" == 0x* ]]
     then
         DECVAL1=$(h2d "${1}")
     fi
     local DECVAL2=${2}
-    # shellcheck disable=SC2003
-    if [ "$(expr index "${2}" 0x)" == 1 ]
+    if [[ "${2}" == 0x* ]]
     then
         DECVAL2=$(h2d "${2}")
     fi
@@ -481,14 +479,12 @@ function hexadd {
 # subtract two hex numbers
 function hexsub {
     local DECVAL1=${1}
-    # shellcheck disable=SC2003
-    if [ "$(expr index "${1}" 0x)" == 1 ]
+    if [[ "${1}" == 0x* ]]
     then
         DECVAL1=$(h2d "${1}")
     fi
     local DECVAL2=${2}
-    # shellcheck disable=SC2003
-    if [ "$(expr index "${2}" 0x)" == 1 ]
+    if [[ "${2}" == 0x* ]]
     then
         DECVAL2=$(h2d "${2}")
     fi
@@ -498,14 +494,12 @@ function hexsub {
 # add two decimal numbers
 function decadd {
     local DECVAL1=${1}
-    # shellcheck disable=SC2003
-    if [ "$(expr index "${1}" 0x)" == 1 ]
+    if [[ "${1}" == 0x* ]]
     then
         DECVAL1=$(h2d "${1}")
     fi
     local DECVAL2=${2}
-    # shellcheck disable=SC2003
-    if [ "$(expr index "${2}" 0x)" == 1 ]
+    if [[ "${2}" == 0x* ]]
     then
         DECVAL2=$(h2d "${2}")
     fi
@@ -515,14 +509,12 @@ function decadd {
 # subtract two decimal numbers
 function decsub {
     local DECVAL1=${1}
-    # shellcheck disable=SC2003
-    if [ "$(expr index "${1}" 0x)" == 1 ]
+    if [[ "${1}" == 0x* ]]
     then
         DECVAL1=$(h2d "${1}")
     fi
     local DECVAL2=${2}
-    # shellcheck disable=SC2003
-    if [ "$(expr index "${2}" 0x)" == 1 ]
+    if [[ "${2}" == 0x* ]]
     then
         DECVAL2=$(h2d "${2}")
     fi
@@ -532,8 +524,7 @@ function decsub {
 # add two IP addresses
 function ipadd {
     local DECVAL1=${1}
-    # shellcheck disable=SC2003
-    if [ "$(expr index "${1}" 0x)" == 1 ]
+    if [[ "${1}" == 0x* ]]
     then
         DECVAL1=$(h2d "${1}")
     elif [ "$(echo "${1}" | cut -d. --output-delimiter=' ' -f1- \
@@ -542,8 +533,7 @@ function ipadd {
         DECVAL1=$(i2d "${1}")
     fi
     local DECVAL2=${2}
-    # shellcheck disable=SC2003
-    if [ "$(expr index "${2}" 0x)" == 1 ]
+    if [[ "${2}" == 0x* ]]
     then
         DECVAL2=$(h2d "${2}")
     elif [ "$(echo "${2}" | cut -d. --output-delimiter=' ' -f1- \
