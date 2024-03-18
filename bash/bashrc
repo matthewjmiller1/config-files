@@ -96,13 +96,22 @@ export VISUAL=$EDITOR
 # Make the prompt show the hostname
 export PS1="\h$ "
 
-# Make ls show colors
 if [[ "$OSTYPE" == "darwin"* ]]; then
+    # Make ls show colors
     export CLICOLOR=1
     if command -v gls &> /dev/null; then
         eval "$(gdircolors)"
         alias ls="gls --color=auto"
     fi
+fi
+
+if [[ "$OSTYPE" == "freebsd"* ]]; then
+    # Make ls show colors
+    alias ls="ls -G"
+
+    # This TERM gives the Linux behavior where closing vim goes back to the
+    # console contents instead of keeping the file contents on the terminal.
+    export TERM=rxvt-unicode-256color
 fi
 
 ### End environment variables ###
