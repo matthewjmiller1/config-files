@@ -131,7 +131,7 @@ if command -v python &> /dev/null; then
     };
 
     function pyvenv_upgrade { 
-        python -m venv --upgrade --upgrade-deps "${1}"
+        python -m venv --upgrade --upgrade-deps "$PYVENV_PATH/{1}"
     };
 
     # Set the default venv
