@@ -206,6 +206,12 @@ alias myps='ps -u $(whoami) -o user,pid,stime,time,args'
 alias pstree='ps U $(whoami) jfww'
 alias pstree_all="ps axjfww"
 
+# Find any non-ASCII characters in a file and highlight them
+alias non_ascii='grep --color="auto" -r -P -n "[^\x00-\x7F]"'
+
+# Find invalid UTF-8 characters in a file
+alias bad_utf8="grep -axv '.*'"
+
 # Aliases for GNU global tags
 if command -v global &> /dev/null; then
     # Find global definitions
