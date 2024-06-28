@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # vim: syntax=sh
 # vim: filetype=sh
 
@@ -9,9 +10,10 @@ if [ -d "$TEX_DIR" ]; then
     export PATH=$PATH:$TEX_DIR
 fi
 
-RUST_DIR="$HOME/.cargo/bin"
-if [ -d "$RUST_DIR" ]; then
-    export PATH=$RUST_DIR:$PATH
+RUST_ENV="$HOME/.cargo/env"
+if test -f "$RUST_ENV"; then
+    # shellcheck disable=SC1090
+    . "$RUST_ENV"
 fi
 
 # Put this before /usr/bin/ to use the brew installed ruby

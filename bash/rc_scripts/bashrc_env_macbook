@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # vim: syntax=sh
 # vim: filetype=sh
 
