@@ -118,6 +118,7 @@ fi
 
 ### Begin Python venv setup  ###
 
+#if test -d "$PYVENV_PATH"; then
 if command -v python &> /dev/null; then
     # Disable the venv addition to the bash prompt
     export VIRTUAL_ENV_DISABLE_PROMPT=1
@@ -131,7 +132,15 @@ if command -v python &> /dev/null; then
     };
 
     function pyvenv_upgrade { 
+        VENV=""
+        if [[ "$VIRTUAL_ENV" != "" ]]; then
+            VENV=$(basename "$VIRTUAL_ENV")
+            deactivate
+        fi
         python -m venv --upgrade --upgrade-deps "$PYVENV_PATH/${1}"
+        if [ -n "$VENV" ]; then
+            pyvenv "$VENV"
+        fi
     };
 
     # Set the default venv
