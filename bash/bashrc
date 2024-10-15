@@ -132,15 +132,7 @@ if command -v python &> /dev/null; then
     };
 
     function pyvenv_upgrade { 
-        VENV=""
-        if [[ "$VIRTUAL_ENV" != "" ]]; then
-            VENV=$(basename "$VIRTUAL_ENV")
-            deactivate
-        fi
         python -m venv --upgrade --upgrade-deps "$PYVENV_PATH/${1}"
-        if [ -n "$VENV" ]; then
-            pyvenv "$VENV"
-        fi
     };
 
     # Set the default venv
