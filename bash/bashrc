@@ -118,7 +118,6 @@ fi
 
 ### Begin Python venv setup  ###
 
-#if test -d "$PYVENV_PATH"; then
 if command -v python &> /dev/null; then
     # Disable the venv addition to the bash prompt
     export VIRTUAL_ENV_DISABLE_PROMPT=1
@@ -131,9 +130,26 @@ if command -v python &> /dev/null; then
         source "$PYVENV_PATH/${1}/bin/activate";
     };
 
-    function pyvenv_upgrade { 
-        python -m venv --upgrade --upgrade-deps "$PYVENV_PATH/${1}"
-    };
+    # This only works if the current executable gets upgraded, not if a
+    # new version is installed.
+    #function pyvenv_upgrade {
+    #    python -m venv --upgrade --upgrade-deps "$PYVENV_PATH/${1}"
+    #};
+
+    # To upgrade to a new python version installed by brew:
+    # 1. pip freeze >| /tmp/requirements.txt
+    # 2. deactivate
+    # 3. mv ${PYVENV_PATH}/${PYVENV_DEFAULT} ${PYVENV_PATH}/${PYVENV_DEFAULT}_old
+    # 4. source $HOME/.bashrc
+    #    - This should make "python" point to the new brew version.
+    # 5. python -m venv ${PYVENV_PATH}/${PYVENV_DEFAULT}
+    # 6. pyvenv ${PYVENV_DEFAULT}
+    # 7. pip install -r /tmp/requirements.txt
+    # 8. pip-review -a
+    # 9. source $HOME/.bashrc
+
+    # To see the pip packages for a given venv version for any python, e.g.:
+    # python ${PYVENV_PATH}/${PYVENV_DEFAULT}/lib/python3.12/site-packages/pip list
 
     # Set the default venv
     if test -e "$PYVENV_PATH/$PYVENV_DEFAULT"; then
