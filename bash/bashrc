@@ -130,12 +130,6 @@ if command -v python &> /dev/null; then
         source "$PYVENV_PATH/${1}/bin/activate";
     };
 
-    # This only works if the current executable gets upgraded, not if a
-    # new version is installed.
-    #function pyvenv_upgrade {
-    #    python -m venv --upgrade --upgrade-deps "$PYVENV_PATH/${1}"
-    #};
-
     # To upgrade to a new python version installed by brew:
     # 1. pip freeze >| /tmp/requirements.txt
     # 2. deactivate
