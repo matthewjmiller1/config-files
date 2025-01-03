@@ -65,6 +65,12 @@ else
     endif
 endif
 
+" The MacVim GUI requires MMLoginShell to be enabled to properly set the PATH
+" from the user's environment to, e.g., execute ':!' or system() calls:
+" https://macvim.org/docs/gui_mac.txt.html#macvim-login-shell
+" This can be done in a MacOS terminal via:
+" $ defaults write org.vim.MacVim MMLoginShell 1
+
 " Don't make it vi-compatible
 set nocompatible
 
