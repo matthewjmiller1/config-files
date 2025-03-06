@@ -17,7 +17,7 @@ if test -f "$RUST_ENV"; then
 fi
 
 # Put this before /usr/bin/ to use the brew installed ruby
-RUBY_DIR=/usr/local/opt/ruby/bin
+RUBY_DIR=$BREW_PATH/opt/ruby/bin
 if [ -d "$RUBY_DIR" ]; then
     export PATH=$RUBY_DIR:$PATH
 fi
@@ -28,7 +28,7 @@ if command -v ruby &> /dev/null; then
     RUBY_VERSION=$(ruby -v | cut -d ' ' -f2 | \
         sed -rn 's/([0-9]\.[0-9]\.)[0-9]/\10/p')
     # Location of ruby gems installed by brew
-    RUBY_GEMS_DIR=/usr/local/lib/ruby/gems/$RUBY_VERSION/bin
+    RUBY_GEMS_DIR=$BREW_PATH/lib/ruby/gems/$RUBY_VERSION/bin
     if [ -d "$RUBY_GEMS_DIR" ]; then
         export PATH=$RUBY_GEMS_DIR:$PATH
     fi
@@ -36,6 +36,10 @@ fi
 
 export PATH=/usr/local/bin:$PATH
 export PATH=/usr/local/sbin:$PATH
+if [ "$BREW_PATH" != "/usr/local" ]; then
+    export PATH=$BREW_PATH/bin:$PATH
+    export PATH=$BREW_PATH/sbin:$PATH
+fi
 
 if command -v brew &> /dev/null; then
     # Put this before /usr/bin/ so python defaults to python3

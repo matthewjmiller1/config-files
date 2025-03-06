@@ -45,6 +45,15 @@ unalias -a
 
 ### Begin PATH setup ###
 
+# From brew install recommendation on setting paths:
+# eval "$(/opt/homebrew/bin/brew shellenv)" on Apple Silicon
+# eval "$(/usr/local/bin/brew shellenv)" on Intel
+
+BREW_PATH="/usr/local"
+if test -f "/opt/homebrew/bin/brew"; then
+    BREW_PATH="/opt/homebrew"
+fi
+
 # Start with a clean path
 PATH=$(getconf PATH)
 export PATH
@@ -65,8 +74,8 @@ export PATH=$PATH:.
 # a subshell and checking the return code (non-zero means it could be unset and,
 # hence, is not read-only).
 if (unset BASH_COMPLETION_COMPAT_DIR 2> /dev/null); then
-    __BASH_COMPLETION_D="/usr/local/etc/bash_completion.d"
-    __BASH_COMPLETION_SH="/usr/local/etc/profile.d/bash_completion.sh"
+    __BASH_COMPLETION_D="$BREW_PATH/etc/bash_completion.d"
+    __BASH_COMPLETION_SH="$BREW_PATH/etc/profile.d/bash_completion.sh"
 
     if [[ -r "$__BASH_COMPLETION_D" ]]; then
         export BASH_COMPLETION_COMPAT_DIR="$__BASH_COMPLETION_D"
