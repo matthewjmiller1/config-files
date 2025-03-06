@@ -80,6 +80,12 @@ syntax on
 " Turn on filetype plugins and indentation
 filetype plugin indent on
 
+" Set to use true colors if the terminal supports it on Mac (some iTerm2
+" instances seem to need this to display colors in vim).
+if has("termguicolors") && exists("$COLORTERM") && $COLORTERM == "truecolor" && has("mac")
+    set termguicolors
+endif
+
 " Put swap files in a .vim directory. The '//' at the end means to
 " preserve the entire file path in this directory so there
 " are not conflicts with files that have the same name but
