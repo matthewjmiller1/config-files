@@ -601,6 +601,15 @@ function catlines {
     printf "**********\n\n"
 };
 
+function fix_scroll {
+    # Fix terminal scrolling when broken due to an ungraceful connection
+    # termination while in a program that remaps keys like vim.
+    #
+    # From:
+    # https://unix.stackexchange.com/a/511741
+    tput rmcup
+};
+
 ### End functions ###
 
 # Do any environment-specific setup
