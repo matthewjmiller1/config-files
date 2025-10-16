@@ -15,6 +15,7 @@
 	df = diff
 	dfc = diff --cached
 	s = status
+	rem = remote
 	# push origin main
 	pom = push origin main
 	# pull (mnemonic="get") origin main
@@ -23,6 +24,9 @@
 	ppw = push proxy work
 	# pull (mnemonic="get") proxy work
 	gpw = pull proxy work
+	# Show branches verbosely
+	brv = branch -vvv
+	remv = remote -vvv
 	# Create a new branch and check it out
 	cob = checkout -b
 	# Delete a branch
@@ -44,6 +48,10 @@
 	lg = log --graph --pretty=tformat:'%h -%d %s (%cr) <%an>' --abbrev-commit --date=relative
 	one = log --pretty=oneline --abbrev-commit 
 	last = log -1 HEAD
+	# Upstream delta commands
+	uplog = log --decorate --graph --abbrev-commit --pretty=oneline @{u}..HEAD --
+	uplogv = log --decorate --abbrev-commit --stat @{u}..HEAD --
+	diff-up = diff @{u}..HEAD
 [pull]
 	# Equivalent of --ff-only option
 	ff = only
