@@ -290,25 +290,25 @@ augroup cmake_filetype_settings
     " or 'o'/'O' in normal mode.
     au FileType cmake setlocal fo+=ro
     " Two space indentation
-    au Filetype cmake setlocal shiftwidth=2
+    au FileType cmake setlocal shiftwidth=2
 augroup END
 
 " gitconfig formatting
 augroup gitconfig_filetype_settings
     autocmd!
     " A tab is equal to 8 spaces
-    au Filetype gitconfig setlocal tabstop=8
+    au FileType gitconfig setlocal tabstop=8
     " Indendation is 8 spaces
-    au Filetype gitconfig setlocal shiftwidth=8
+    au FileType gitconfig setlocal shiftwidth=8
     " Use true tabs
-    au Filetype gitconfig setlocal noexpandtab
+    au FileType gitconfig setlocal noexpandtab
 augroup END
 
 " jsonnet formatting
 augroup jsonnet_filetype_settings
     autocmd!
     " Two space indentation
-    au Filetype jsonnet setlocal shiftwidth=2
+    au FileType jsonnet setlocal shiftwidth=2
 augroup END
 
 " Common C/C++ formatting
@@ -316,16 +316,16 @@ augroup c_cpp_filetype_settings
     autocmd!
     " Place case label at same indentation as switch and autoindent
     " after case statements.
-    au Filetype c,cpp setlocal cinoptions+=:0 cinwords+=case
+    au FileType c,cpp setlocal cinoptions+=:0 cinwords+=case
     " Make open ( indents line up with next non-white char after (
-    au Filetype c,cpp setlocal cinoptions+=(0
+    au FileType c,cpp setlocal cinoptions+=(0
 augroup END
 
 " C formatting
 augroup c_filetype_settings
     autocmd!
     " Per Linux/FreeBSD kernel style, use true tabs for indent
-    au Filetype c setlocal ts=8 shiftwidth=8 noexpandtab
+    au FileType c setlocal ts=8 shiftwidth=8 noexpandtab
     " For C23, add nullptr as a keyword
     au Syntax c syntax keyword cConstant nullptr
 augroup END
@@ -334,7 +334,7 @@ augroup END
 augroup cpp_filetype_settings
     autocmd!
     " Four space indent, no true tabs
-    au Filetype cpp setlocal ts=8 shiftwidth=4 expandtab
+    au FileType cpp setlocal ts=8 shiftwidth=4 expandtab
 augroup END
 
 " protobuf formatting
@@ -342,13 +342,13 @@ augroup protobuf_filetype_settings
     autocmd!
     " Based on:
     " https://developers.google.com/protocol-buffers/docs/style
-    au Filetype proto setlocal shiftwidth=2 smartindent
+    au FileType proto setlocal shiftwidth=2 smartindent
 augroup END
 
 " yaml formatting
 augroup yaml_filetype_settings
     autocmd!
-    au Filetype yaml setlocal shiftwidth=2
+    au FileType yaml setlocal shiftwidth=2
 augroup END
 
 " Toggle the highlight of the search term
