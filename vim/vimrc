@@ -211,12 +211,9 @@ set wildmenu
 " and unloaded buffers in the buffer list.
 set complete=.,w,b,u
 
-" For the window with buffer 1, use +/- for increasing and decreasing the
-" window split
-if bufwinnr(1)
-    nnoremap + <C-W>+
-    nnoremap - <C-W>-
-endif
+" Use +/- for increasing and decreasing the window split
+nnoremap + <C-W>+
+nnoremap - <C-W>-
 
 " Jump to last known cursor position when opening a file
 " (:help last-position-jump)
