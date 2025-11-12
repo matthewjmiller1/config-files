@@ -250,7 +250,7 @@ augroup text_filetype_settings
     " format numbered lists
     autocmd FileType text setlocal fo+=n
     " 3 spaces for tabs
-    autocmd FileType text setlocal ts=3
+    autocmd FileType text setlocal tabstop=3
 augroup END
 
 " p4 change formatting
@@ -325,7 +325,7 @@ augroup END
 augroup c_filetype_settings
     autocmd!
     " Per Linux/FreeBSD kernel style, use true tabs for indent
-    autocmd FileType c setlocal ts=8 shiftwidth=8 noexpandtab
+    autocmd FileType c setlocal tabstop=8 shiftwidth=8 noexpandtab
     " For C23, add nullptr as a keyword
     autocmd Syntax c syntax keyword cConstant nullptr
 augroup END
@@ -334,7 +334,7 @@ augroup END
 augroup cpp_filetype_settings
     autocmd!
     " Four space indent, no true tabs
-    autocmd FileType cpp setlocal ts=8 shiftwidth=4 expandtab
+    autocmd FileType cpp setlocal tabstop=8 shiftwidth=4 expandtab
 augroup END
 
 " protobuf formatting
