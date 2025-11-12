@@ -387,10 +387,10 @@ nnoremap <silent> ,wc :match<CR>
 " Set C syntax
 " 'C file': use the 'f' to disambiguate from ,cpp so there is no delay
 " in applying the command.
-nnoremap <silent> ,cf :set syntax=c<CR>:setlocal filetype=c<CR>
+nnoremap <silent> ,cf :set filetype=c<CR>
 
 " Set C++ syntax
-nnoremap <silent> ,cpp :set syntax=cpp<CR>:setlocal filetype=cpp<CR>
+nnoremap <silent> ,cpp :set filetype=cpp<CR>
 
 " Turn on spell check
 nnoremap <silent> ,sp :setlocal spell!<CR>
@@ -400,22 +400,34 @@ function! ShowFuncName()
     let lnum = line(".")
     let col = col(".")
     echohl ModeMsg
-    echo getline(search("^[^ \t#/]\\{2}.*[^:]\s*$", 'bW'))
+    let func_line = search("^[^ \t#/]\\{2}.*[^:]\s*$", 'bW')
+    if func_line > 0
+        echo getline(func_line)
+    else
+        echo "No function found"
+    endif
     echohl None
-    call search("\\%" . lnum . "l" . "\\%" . col . "c")
+    silent! call search("\\%" . lnum . "l" . "\\%" . col . "c")
 endfun
-nnoremap ,f :call ShowFuncName()<CR>
+nnoremap <silent> ,f :call ShowFuncName()<CR>
 
 " Jump to function {'s even if they're not in the first column (e.g, C++ class)
 " https://stackoverflow.com/a/50598425
+
 " Jump to the previous function
-nnoremap <silent> [f :call
-\ search('\(\(if\\|for\\|while\\|switch\\|catch\)\_s*\)\@64<!(\_[^)]*)\_[^;{}()]*\zs{', "bw")<CR>
-" nnoremap <silent> [f :call search('^\s*\(\i\+\_[ \t\*]\+\)\+\i\+\_s*(\_[^)]*)\_s*{', "bw")<CR>
+function! JumpToPrevFunc()
+    " silent! call search('^\s*\(\i\+\_[ \t\*]\+\)\+\i\+\_s*(\_[^)]*)\_s*{', "bw")<CR>
+    silent! call search('\(\(if\\|for\\|while\\|switch\\|catch\)\_s*\)\@64<!(\_[^)]*)\_[^;{}()]*\zs{', 'bw')
+endfunction
+
 " Jump to the next function
-nnoremap <silent> ]f :call
-\ search('\(\(if\\|for\\|while\\|switch\\|catch\)\_s*\)\@64<!(\_[^)]*)\_[^;{}()]*\zs{', "w")<CR>
-" nnoremap <silent> ]f :call search('^\s*\(\i\+\_[ \t\*]\+\)\+\i\+\_s*(\_[^)]*)\_s*{', "w")<CR>
+function! JumpToNextFunc()
+    " silent! call search('^\s*\(\i\+\_[ \t\*]\+\)\+\i\+\_s*(\_[^)]*)\_s*{', "w")<CR>
+    silent! call search('\(\(if\\|for\\|while\\|switch\\|catch\)\_s*\)\@64<!(\_[^)]*)\_[^;{}()]*\zs{', 'w')
+endfunction
+
+nnoremap <silent> [f :call JumpToPrevFunc()<CR>
+nnoremap <silent> ]f :call JumpToNextFunc()<CR>
 
 " Use :buffers to display buffers and :bd to delete (close) the
 " current buffer or specify a number to delete a specific buffer 
