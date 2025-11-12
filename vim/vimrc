@@ -487,6 +487,9 @@ function! CheckSwap()
 endfunction
 
 if &swf
-    set shm+=A
-    autocmd BufReadPre * call CheckSwap()
+    set shortmess+=A
+    augroup swap_readonly
+        autocmd!
+        autocmd BufReadPre * call CheckSwap()
+    augroup END
 endif
