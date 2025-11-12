@@ -75,6 +75,7 @@ endif
 set nocompatible
 
 " Turn on syntax highlighting
+" Use `:scriptnames` to see the configuration files used for syntax highlighting
 syntax on
 
 " Turn on filetype plugins and indentation
@@ -292,6 +293,12 @@ au Filetype c,cpp setlocal cinoptions+=(0
 " C formatting
 " Per Linux/FreeBSD kernel style, use true tabs for indent
 au Filetype c setlocal ts=8 shiftwidth=8 noexpandtab
+augroup ft_c_custom
+    " Clean the group to avoid duplicates on reload
+    autocmd!
+    " For C23, add nullptr as a keyword
+    autocmd Syntax c syntax keyword cConstant nullptr
+augroup END
 
 " C++ formatting
 " Four space indent, no true tabs
