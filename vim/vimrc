@@ -397,12 +397,12 @@ nnoremap <silent> ,sp :setlocal spell!<CR>
 
 " Show the function name for the given line.
 function! ShowFuncName()
-  let lnum = line(".")
-  let col = col(".")
-  echohl ModeMsg
-  echo getline(search("^[^ \t#/]\\{2}.*[^:]\s*$", 'bW'))
-  echohl None
-  call search("\\%" . lnum . "l" . "\\%" . col . "c")
+    let lnum = line(".")
+    let col = col(".")
+    echohl ModeMsg
+    echo getline(search("^[^ \t#/]\\{2}.*[^:]\s*$", 'bW'))
+    echohl None
+    call search("\\%" . lnum . "l" . "\\%" . col . "c")
 endfun
 nnoremap ,f :call ShowFuncName()<CR>
 
@@ -440,22 +440,22 @@ noremap ;c :'a,.s///gc<Left><Left><Left><Left>
 
 " Delete the buffer; keep windows.
 function! Kwbd_internal(kwbdStage)
-  if(a:kwbdStage == 1)
-    let g:kwbdBufNum = bufnr("%")
-    let g:kwbdWinNum = winnr()
-    windo call Kwbd_internal(2)
-    execute "bd! " . g:kwbdBufNum
-    execute "normal " . g:kwbdWinNum . ""
-  else
-    if(bufnr("%") == g:kwbdBufNum)
-      let prevbufvar = bufnr("#")
-      if(prevbufvar > 0 && buflisted(prevbufvar) && prevbufvar != g:kwbdBufNum)
-        b #
-      else
-        bn
-      endif
+    if(a:kwbdStage == 1)
+        let g:kwbdBufNum = bufnr("%")
+        let g:kwbdWinNum = winnr()
+        windo call Kwbd_internal(2)
+        execute "bd! " . g:kwbdBufNum
+        execute "normal " . g:kwbdWinNum . ""
+    else
+        if(bufnr("%") == g:kwbdBufNum)
+            let prevbufvar = bufnr("#")
+            if(prevbufvar > 0 && buflisted(prevbufvar) && prevbufvar != g:kwbdBufNum)
+                b #
+            else
+                bn
+            endif
+        endif
     endif
-  endif
 endfunction
 com! Kwbd call Kwbd_internal(1)
 
@@ -468,13 +468,13 @@ endif
 
 " Already opened files should be open read-only by default.
 func! CheckSwap()
-  swapname
-  if v:statusmsg =~ '\.sw[^p]$'
-    set ro
-  endif
+    swapname
+    if v:statusmsg =~ '\.sw[^p]$'
+        set ro
+    endif
 endfunc
 
 if &swf
-  set shm+=A
-  autocmd BufReadPre * call CheckSwap()
+    set shm+=A
+    autocmd BufReadPre * call CheckSwap()
 endif
