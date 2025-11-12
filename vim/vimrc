@@ -479,12 +479,12 @@ if !exists(':DiffOrig')
 endif
 
 " Already opened files should be open read-only by default.
-func! CheckSwap()
-    swapname
+function! CheckSwap()
+    silent! swapname
     if v:statusmsg =~ '\.sw[^p]$'
-        set ro
+        setlocal readonly
     endif
-endfunc
+endfunction
 
 if &swf
     set shm+=A
