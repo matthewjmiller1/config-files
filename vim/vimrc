@@ -231,37 +231,37 @@ augroup END
 " https://vim.fandom.com/wiki/Forcing_Syntax_Coloring_for_files_with_odd_extensions
 augroup filetype_overrides
     autocmd!
-    au BufRead,BufNewFile *.\(ut\) setlocal filetype=cpp
-    au BufRead,BufNewFile *.\(smf\) setlocal filetype=cpp
-    au BufRead,BufNewFile *.\(dox\) setlocal filetype=cpp
+    autocmd BufRead,BufNewFile *.\(ut\) setlocal filetype=cpp
+    autocmd BufRead,BufNewFile *.\(smf\) setlocal filetype=cpp
+    autocmd BufRead,BufNewFile *.\(dox\) setlocal filetype=cpp
     " Treat Dockerfile's with extensions as dockerfile
-    au BufRead,BufNewFile Dockerfile.* setlocal syntax=dockerfile
+    autocmd BufRead,BufNewFile Dockerfile.* setlocal syntax=dockerfile
     " Treat gitconfig's with extensions as gitconfig
-    au BufRead,BufNewFile gitconfig* setlocal filetype=gitconfig
-    au BufRead,BufNewFile .gitconfig* setlocal filetype=gitconfig
+    autocmd BufRead,BufNewFile gitconfig* setlocal filetype=gitconfig
+    autocmd BufRead,BufNewFile .gitconfig* setlocal filetype=gitconfig
 
     " Define any custom filetypes
-    au BufNewFile,BufRead /tmp/tmp.[0-9]*.* setlocal filetype=p4change
+    autocmd BufNewFile,BufRead /tmp/tmp.[0-9]*.* setlocal filetype=p4change
 augroup END
 
 " text formatting
 augroup text_filetype_settings
     autocmd!
     " format numbered lists
-    au FileType text setlocal fo+=n
+    autocmd FileType text setlocal fo+=n
     " 3 spaces for tabs
-    au FileType text setlocal ts=3
+    autocmd FileType text setlocal ts=3
 augroup END
 
 " p4 change formatting
 augroup p4change_filetype_settings
     autocmd!
     " Use conf syntax
-    au FileType p4change setlocal syntax=conf
+    autocmd FileType p4change setlocal syntax=conf
     " Use tabs
-    au FileType p4change setlocal noexpandtab
+    autocmd FileType p4change setlocal noexpandtab
     " format numbered lists
-    au FileType p4change setlocal fo+=n
+    autocmd FileType p4change setlocal fo+=n
 augroup END
 
 " python formatting
@@ -269,10 +269,10 @@ augroup python_filetype_settings
     autocmd!
     " Continue comment leader onto next like in insert mode after <enter>
     " or 'o'/'O' in normal mode.
-    au FileType python setlocal fo+=ro
+    autocmd FileType python setlocal fo+=ro
     " Change SpellBad color to one that doesn't hide with the red string font.
     " ctermbg=2 is a greenish color.
-    au FileType python hi SpellBad ctermbg=2
+    autocmd FileType python hi SpellBad ctermbg=2
 augroup END
 
 " shell formatting
@@ -280,7 +280,7 @@ augroup shell_filetype_settings
     autocmd!
     " Continue comment leader onto next like in insert mode after <enter>
     " or 'o'/'O' in normal mode.
-    au FileType sh setlocal fo+=ro
+    autocmd FileType sh setlocal fo+=ro
 augroup END
 
 " cmake formatting
@@ -288,27 +288,27 @@ augroup cmake_filetype_settings
     autocmd!
     " Continue comment leader onto next like in insert mode after <enter>
     " or 'o'/'O' in normal mode.
-    au FileType cmake setlocal fo+=ro
+    autocmd FileType cmake setlocal fo+=ro
     " Two space indentation
-    au FileType cmake setlocal shiftwidth=2
+    autocmd FileType cmake setlocal shiftwidth=2
 augroup END
 
 " gitconfig formatting
 augroup gitconfig_filetype_settings
     autocmd!
     " A tab is equal to 8 spaces
-    au FileType gitconfig setlocal tabstop=8
+    autocmd FileType gitconfig setlocal tabstop=8
     " Indendation is 8 spaces
-    au FileType gitconfig setlocal shiftwidth=8
+    autocmd FileType gitconfig setlocal shiftwidth=8
     " Use true tabs
-    au FileType gitconfig setlocal noexpandtab
+    autocmd FileType gitconfig setlocal noexpandtab
 augroup END
 
 " jsonnet formatting
 augroup jsonnet_filetype_settings
     autocmd!
     " Two space indentation
-    au FileType jsonnet setlocal shiftwidth=2
+    autocmd FileType jsonnet setlocal shiftwidth=2
 augroup END
 
 " Common C/C++ formatting
@@ -316,25 +316,25 @@ augroup c_cpp_filetype_settings
     autocmd!
     " Place case label at same indentation as switch and autoindent
     " after case statements.
-    au FileType c,cpp setlocal cinoptions+=:0 cinwords+=case
+    autocmd FileType c,cpp setlocal cinoptions+=:0 cinwords+=case
     " Make open ( indents line up with next non-white char after (
-    au FileType c,cpp setlocal cinoptions+=(0
+    autocmd FileType c,cpp setlocal cinoptions+=(0
 augroup END
 
 " C formatting
 augroup c_filetype_settings
     autocmd!
     " Per Linux/FreeBSD kernel style, use true tabs for indent
-    au FileType c setlocal ts=8 shiftwidth=8 noexpandtab
+    autocmd FileType c setlocal ts=8 shiftwidth=8 noexpandtab
     " For C23, add nullptr as a keyword
-    au Syntax c syntax keyword cConstant nullptr
+    autocmd Syntax c syntax keyword cConstant nullptr
 augroup END
 
 " C++ formatting
 augroup cpp_filetype_settings
     autocmd!
     " Four space indent, no true tabs
-    au FileType cpp setlocal ts=8 shiftwidth=4 expandtab
+    autocmd FileType cpp setlocal ts=8 shiftwidth=4 expandtab
 augroup END
 
 " protobuf formatting
@@ -342,13 +342,13 @@ augroup protobuf_filetype_settings
     autocmd!
     " Based on:
     " https://developers.google.com/protocol-buffers/docs/style
-    au FileType proto setlocal shiftwidth=2 smartindent
+    autocmd FileType proto setlocal shiftwidth=2 smartindent
 augroup END
 
 " yaml formatting
 augroup yaml_filetype_settings
     autocmd!
-    au FileType yaml setlocal shiftwidth=2
+    autocmd FileType yaml setlocal shiftwidth=2
 augroup END
 
 " Toggle the highlight of the search term
@@ -472,5 +472,5 @@ endfunc
 
 if &swf
   set shm+=A
-  au BufReadPre * call CheckSwap()
+  autocmd BufReadPre * call CheckSwap()
 endif
