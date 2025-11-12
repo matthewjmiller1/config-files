@@ -451,25 +451,27 @@ nnoremap ;a :'a,.s///g<Left><Left><Left>
 nnoremap ;c :'a,.s///gc<Left><Left><Left><Left>
 
 " Delete the buffer; keep windows.
-function! Kwbd_internal(kwbdStage)
-    if(a:kwbdStage == 1)
-        let g:kwbdBufNum = bufnr("%")
-        let g:kwbdWinNum = winnr()
-        windo call Kwbd_internal(2)
-        execute "bd! " . g:kwbdBufNum
-        execute "normal " . g:kwbdWinNum . ""
+let s:kwbdBufNum = 0
+let s:kwbdWinNum = 0
+function! s:Kwbd_internal(stage)
+    if a:stage == 1
+        let s:kwbdBufNum = bufnr('%')
+        let s:kwbdWinNum = winnr()
+        windo call s:Kwbd_internal(2)
+        execute 'bd! ' . s:kwbdBufNum
+        execute 'normal! ' . s:kwbdWinNum
     else
-        if(bufnr("%") == g:kwbdBufNum)
-            let prevbufvar = bufnr("#")
-            if(prevbufvar > 0 && buflisted(prevbufvar) && prevbufvar != g:kwbdBufNum)
+        if bufnr('%') == s:kwbdBufNum
+            let prevbuf = bufnr('#')
+            if prevbuf > 0 && buflisted(prevbuf) && prevbuf != s:kwbdBufNum
                 b #
             else
-                bn
+                bnext
             endif
         endif
     endif
 endfunction
-com! Kwbd call Kwbd_internal(1)
+command! Kwbd call s:Kwbd_internal(1)
 
 " Copied from ':h :DiffOrig'. Can be used to diff :recover operations from
 " swap files.
