@@ -150,7 +150,7 @@ endif
 " Use ':verbose highlight SpellCap' to see the highlight setting for this.
 " Others are SpellBad, SpellRare, and SpellLocal.
 " ctermbg=3 is a brownish color.
-hi SpellCap ctermbg=3
+highlight SpellCap ctermbg=3 guibg=#A52A2A
 
 " Continue the previous line's indentation
 set autoindent
