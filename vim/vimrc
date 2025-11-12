@@ -326,6 +326,10 @@ augroup c_filetype_settings
     autocmd!
     " Per Linux/FreeBSD kernel style, use true tabs for indent
     autocmd FileType c setlocal tabstop=8 shiftwidth=8 noexpandtab
+augroup END
+
+augroup c_syntax_settings
+    autocmd!
     " For C23, add nullptr as a keyword
     autocmd Syntax c syntax keyword cConstant nullptr
 augroup END
@@ -356,10 +360,10 @@ set nohlsearch
 nnoremap <silent> ,h :set hlsearch!<CR>
 
 " Toggle showing line numbers
-nnoremap ,n :set nu!<CR>
+nnoremap <silent> ,n :set nu!<CR>
 
 " Enter mode to paste pre-formatted text
-nnoremap ,p :set paste!<CR>
+nnoremap <silent> ,p :set paste!<CR>
 
 " Copy file name or full path to clipboard
 " https://vim.fandom.com/wiki/Copy_filename_to_clipboard
@@ -369,16 +373,16 @@ nnoremap ,p :set paste!<CR>
 " $ vim --version | grep .xterm_clipboard -o
 " +xterm_clipboard
 " $
-nnoremap ,cs :let @*=expand("%")<CR>
-nnoremap ,cl :let @*=expand("%:p")<CR>
+nnoremap <silent> ,cs :let @*=expand("%")<CR>
+nnoremap <silent> ,cl :let @*=expand("%:p")<CR>
 
 " Highlight trailing white space in C code
 " http://vim.wikia.com/wiki/Highlight_unwanted_spaces
 highlight ExtraWhitespace ctermbg=red guibg=red
 " 'Whitespace show'
-nnoremap ,ws :match ExtraWhitespace /\s\+$/<CR>
+nnoremap <silent> ,ws :match ExtraWhitespace /\s\+$/<CR>
 " 'Whitespace clear'
-nnoremap ,wc :match<CR>
+nnoremap <silent> ,wc :match<CR>
 
 " Set C syntax
 " 'C file': use the 'f' to disambiguate from ,cpp so there is no delay
@@ -389,7 +393,7 @@ nnoremap <silent> ,cf :set syntax=c<CR>:setlocal filetype=c<CR>
 nnoremap <silent> ,cpp :set syntax=cpp<CR>:setlocal filetype=cpp<CR>
 
 " Turn on spell check
-nnoremap ,sp :setlocal spell!<CR>
+nnoremap <silent> ,sp :setlocal spell!<CR>
 
 " Show the function name for the given line.
 function! ShowFuncName()
