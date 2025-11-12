@@ -445,10 +445,10 @@ nnoremap <C-k> <C-W>k
 
 " Mappings to automatically put up search and replace.
 " Use the non-recursive mapping.
-noremap ;; :%s///g<Left><Left><Left>
-noremap ;' :%s///gc<Left><Left><Left><Left>
-noremap ;a :'a,.s///g<Left><Left><Left>
-noremap ;c :'a,.s///gc<Left><Left><Left><Left>
+nnoremap ;; :%s///g<Left><Left><Left>
+nnoremap ;' :%s///gc<Left><Left><Left><Left>
+nnoremap ;a :'a,.s///g<Left><Left><Left>
+nnoremap ;c :'a,.s///gc<Left><Left><Left><Left>
 
 " Delete the buffer; keep windows.
 function! Kwbd_internal(kwbdStage)
