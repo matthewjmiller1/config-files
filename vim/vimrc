@@ -175,7 +175,7 @@ set backspace=indent,eol,start
 
 " Unbind some useless/annoying default key bindings.
 " 'Q' in normal mode enters Ex mode. You almost never want this.
-nmap Q <Nop>
+nnoremap Q <Nop>
 
 " Always show a status line
 set laststatus=2
@@ -196,7 +196,9 @@ if v:version >= 800
 endif
 
 " Turn off the beep and visual bell
-set noerrorbells vb t_vb=
+set noerrorbells
+set novisualbell
+set t_vb=
 
 " Avoid the 'Hit ENTER' messages by using two lines for the command line
 set cmdheight=2
