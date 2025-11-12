@@ -312,11 +312,14 @@ augroup jsonnet_filetype_settings
 augroup END
 
 " Common C/C++ formatting
-" Place case label at same indentation as switch and autoindent
-" after case statements.
-au Filetype c,cpp setlocal cinoptions+=:0 cinwords+=case
-" Make open ( indents line up with next non-white char after (
-au Filetype c,cpp setlocal cinoptions+=(0
+augroup c_cpp_filetype_settings
+    autocmd!
+    " Place case label at same indentation as switch and autoindent
+    " after case statements.
+    au Filetype c,cpp setlocal cinoptions+=:0 cinwords+=case
+    " Make open ( indents line up with next non-white char after (
+    au Filetype c,cpp setlocal cinoptions+=(0
+augroup END
 
 " C formatting
 augroup c_filetype_settings
