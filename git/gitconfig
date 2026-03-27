@@ -34,7 +34,7 @@
 	# Show status in short format with branch info
 	st = status -sb
         # Rebase from the remote
-        pr = pull --rebase
+        pr2 = pull --rebase
 	# Rebase from the remote and autostash unstaged changes.
 	# This stashes changes, does the rebase, then applies the stashed
 	# changes.
