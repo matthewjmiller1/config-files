@@ -11,10 +11,6 @@ if [ -z "${DO_LEGACY_VNC}" ]; then
     /usr/bin/startxfce4
     #/usr/bin/mate-session
     #/usr/bin/cinnamon-session
-
-    [ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup
-    [ -r "$HOME"/.Xresources ] && xrdb "$HOME"/.Xresources
-    x-window-manager &
 else
     # This is needed for copy+paste to work in some environments
     vncconfig -nowin &
