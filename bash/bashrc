@@ -104,6 +104,8 @@ export EDITOR=vim
 export VISUAL=$EDITOR
 # Make the prompt show the hostname
 export PS1="\h$ "
+# Preferred locale
+export LANG=en_US.UTF-8
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # Make ls show colors
