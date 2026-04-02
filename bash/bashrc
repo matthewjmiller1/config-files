@@ -248,6 +248,17 @@ if command -v global &> /dev/null; then
     alias gtc="global -c"
 fi
 
+# Aliases for tmux+iterm2
+if command -v tmux &> /dev/null; then
+    if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
+        alias tn="tmux -CC new-session -A -s"
+        alias ta="tmux -CC attach-session"
+        alias to="tmux -CC attach-session -t"
+    fi
+    alias tl="tmux list-session"
+    alias tkill="tmux kill-session -t"
+fi
+
 # Ansible aliases
 if command -v ansible &> /dev/null; then
     alias ans="ansible"
