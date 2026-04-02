@@ -1,0 +1,10 @@
+# shellcheck shell=bash
+# vim: syntax=sh
+# vim: filetype=sh
+
+# Source .bashrc if it exists and we're in an interactive bash shell
+if [ -n "$BASH_VERSION" ] && [ -n "$PS1" ]; then
+    if [ -f "$HOME/.bashrc" ]; then
+        . "$HOME/.bashrc"
+    fi
+fi
