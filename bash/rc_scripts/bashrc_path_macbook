@@ -10,6 +10,12 @@ if [ -d "$TEX_DIR" ]; then
     export PATH=$PATH:$TEX_DIR
 fi
 
+# Add Visual Studio Code (code)
+VSCODE_DIR="/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+if [ -d "$VSCODE_DIR" ]; then
+    export PATH="$PATH:$VSCODE_DIR"
+fi
+
 RUST_ENV="$HOME/.cargo/env"
 if test -f "$RUST_ENV"; then
     # shellcheck disable=SC1090
