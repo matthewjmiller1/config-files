@@ -46,12 +46,13 @@
 	# Various ways of showing repo history
 	hist = log --pretty=tformat:\"%h %ad | %s%d [%an]\" --graph --date=short
 	lg = log --graph --pretty=tformat:'%h -%d %s (%cr) <%an>' --abbrev-commit --date=relative
-	one = log --pretty=oneline --abbrev-commit 
+	one = log --oneline
 	last = log -1 HEAD
 	# Upstream delta commands
-	uplog = log --decorate --graph --abbrev-commit --pretty=oneline @{u}..HEAD --
-	uplogv = log --decorate --abbrev-commit --stat @{u}..HEAD --
+	log-up = log --oneline --decorate --graph @{u}..HEAD --
+	logv-up = log --decorate --abbrev-commit --stat @{u}..HEAD --
 	diff-up = diff @{u}..HEAD
+	files-up = diff --name-status @{u}..HEAD
 [pull]
 	# Equivalent of --ff-only option
 	ff = only
