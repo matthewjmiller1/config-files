@@ -46,8 +46,19 @@
 	alias = config --get-regexp ^alias\\.
 	# Various ways of showing repo history
 	hist = log --pretty=tformat:\"%h %ad | %s%d [%an]\" --graph --date=short
-	lg = log --graph --pretty=tformat:'%h -%d %s (%cr) <%an>' --abbrev-commit --date=relative
+	lg = log --graph --pretty=tformat:'%h -%d %s (%cr) <%an>' \
+		--abbrev-commit --date=relative
 	one = log --oneline
+	# Last N commits on a given file.
+	# Runs a small shell function and parses its args.
+	lastn = "!f(){ n=\"$1\"; file=\"$2\"; shift 2; \
+		git one -n \"$n\" --follow -- \"$file\" \"$@\"; }; f"
+	lastnv = "!f(){ n=\"$1\"; file=\"$2\"; shift 2; \
+		git log -n \"$n\" --follow -- \"$file\" \"$@\"; }; f"
+	histn = "!f(){ n=\"$1\"; file=\"$2\"; shift 2; \
+		git hist -n \"$n\" --follow -- \"$file\" \"$@\"; }; f"
+	lgn = "!f(){ n=\"$1\"; file=\"$2\"; shift 2; \
+		git lg -n \"$n\" --follow -- \"$file\" \"$@\"; }; f"
 	last = log -1 HEAD
 	# Upstream delta commands
 	log-up = log --oneline --decorate --graph @{u}..HEAD --
