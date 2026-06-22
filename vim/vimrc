@@ -2,7 +2,6 @@
 
 " List of plugins to configure, if installed
 let s:configure_ctrlp = 0
-let s:configure_md_preview = 0
 let s:configure_md_preview_nvim = 0
 
 " Uses vim-plug as a plugin manager, if it is installed.
@@ -34,12 +33,6 @@ if !empty(glob('~/.vim/autoload/plug.vim')) && executable('git')
     " CtrlP for buffer management
     Plug 'ctrlpvim/ctrlp.vim'
     let s:configure_ctrlp = 1
-
-    " Github Markdown preview
-    " Depends on grip being installed:
-    " https://github.com/joeyespo/grip
-    " Plug 'JamshedVesuna/vim-markdown-preview'
-    " let s:configure_md_preview = 1
 
     " Markdown Preview for (Neo)vim
     " Depends on node being installed.
@@ -110,16 +103,6 @@ if s:configure_ctrlp
     let g:ctrlp_regexp = 1
     " Disable root path b/c we're using buffer searching
     let g:ctrlp_working_path_mode = 0
-endif
-
-if s:configure_md_preview
-    " Plugin settings for vim-markdown-preview
-    " Use grip
-    let vim_markdown_preview_github=1
-    " Preview images when using the hotkey
-    let vim_markdown_preview_toggle=1
-    " Refresh preview with hotkey CTRL-m
-    let vim_markdown_preview_hotkey='<C-m>'
 endif
 
 if s:configure_md_preview_nvim
