@@ -49,6 +49,8 @@
 	lg = log --graph --pretty=tformat:'%h -%d %s (%cr) <%an>' \
 		--abbrev-commit --date=relative
 	one = log --oneline
+	log-user = "!f() { a=\"$1\"; shift; git log --oneline \
+		--author=\"$a\" \"$@\"; }; f"
 	# Last N commits on a given file.
 	# Runs a small shell function and parses its args.
 	lastn = "!f(){ n=\"$1\"; file=\"$2\"; shift 2; \
