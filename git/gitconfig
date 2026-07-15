@@ -45,9 +45,14 @@
 	# List git aliases
 	alias = config --get-regexp ^alias\\.
 	# Various ways of showing repo history
-	hist = log --pretty=tformat:\"%h %ad | %s%d [%an]\" --graph --date=short
-	lg = log --graph --pretty=tformat:'%h -%d %s (%cr) <%an>' \
-		--abbrev-commit --date=relative
+	hist = "!f(){ git log --graph --date=short \
+		--pretty=tformat:\"%C(yellow)%h%Creset %C(green)%ad%Creset \
+		| %s%C(auto)%d%Creset [%C(blue)%an%Creset]\" \
+		\"$@\"; }; f"
+	lg = "!f(){ git log --graph --abbrev-commit --date=relative \
+		--pretty=tformat:\"%C(yellow)%h%Creset %C(auto)%d%Creset \
+		%s %C(green)(%cr)%Creset \
+		<%C(blue)%an%Creset>\" \"$@\"; }; f"
 	one = log --oneline
 	log-user = "!f() { a=\"$1\"; shift; git log --oneline \
 		--author=\"$a\" \"$@\"; }; f"
