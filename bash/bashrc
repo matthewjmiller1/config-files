@@ -312,24 +312,24 @@ function vnckill {
     vncserver -kill :"${1}"; 
 };
 
-if command -v python &> /dev/null; then
-    function js_lint { 
-        python -m json.tool "${1}" /dev/null
+if command -v jq &> /dev/null; then
+    function js_lint {
+        jq -e . "${1}" &> /dev/null
     };
 
-    function js_fmt { 
+    function js_fmt {
         local ORIG_FILE="${1}"
-        local FMT_FILE="${1}.fmt"
         local TMP_FILE
 
         TMP_FILE=$(mktemp /tmp/js_fmt-XXXXX)
 
-        if python -m json.tool "$ORIG_FILE" "$FMT_FILE";
-        then
-            /bin/cp "$ORIG_FILE" "$TMP_FILE"
-            /bin/cp "$FMT_FILE" "$ORIG_FILE"
+        # Output the formatted json directly to a temporary file
+        if jq . "$ORIG_FILE" >| "$TMP_FILE" 2>/dev/null; then
+            /bin/cp "$ORIG_FILE" "${TMP_FILE}.bak"
+            /bin/cp "$TMP_FILE" "$ORIG_FILE"
+            /bin/rm "${TMP_FILE}.bak"
         fi
-        /bin/rm "$FMT_FILE"
+        /bin/rm "$TMP_FILE"
     };
 fi
 
