@@ -80,14 +80,29 @@ syntax on
 " Turn on filetype plugins and indentation
 filetype plugin indent on
 
-" Put swap files in a .vim directory. The '//' at the end means to
-" preserve the entire file path in this directory so there
-" are not conflicts with files that have the same name but
+" Keep swaps centralized and collision-free
+" Put swap files in a .vim directory.
+" Prefer swap dir from env var, else default
+let s:swapdir = empty($VIM_SWAPDIR) ? expand('~/.vim/swap') : expand($VIM_SWAPDIR)
+
+" Put it first, but keep whatever Vim already had as fallback(s) (e.g. '.')
+" The '//' at the end means to preserve the entire file path in this
+" directory so there are not conflicts with files that have the same name but
 " different paths.
-let s:swap_path = expand('~/.vim/swap//')
-if isdirectory(s:swap_path)
-    let &directory=s:swap_path
-endif
+execute 'set directory^=' . fnameescape(s:swapdir . '//')
+
+" Delete a stale swap file
+command! SwapDelete call s:SwapDelete()
+function! s:SwapDelete() abort
+  let l:sw = swapname()
+  if empty(l:sw) | echo "No swap file." | return | endif
+  if delete(l:sw) == 0
+    setlocal noreadonly
+    echo "Deleted: " . l:sw
+  else
+    echoerr "Failed to delete: " . l:sw
+  endif
+endfunction
 
 if s:configure_ctrlp
     " Shortcut to invoke ctrlp
@@ -479,20 +494,4 @@ command! Kwbd call s:Kwbd_internal(1)
 if !exists(':DiffOrig')
     command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_
       \ | diffthis | wincmd p | diffthis
-endif
-
-" Already opened files should be open read-only by default.
-function! CheckSwap()
-    silent! swapname
-    if v:statusmsg =~ '\.sw[^p]$'
-        setlocal readonly
-    endif
-endfunction
-
-if &swf
-    set shortmess+=A
-    augroup swap_readonly
-        autocmd!
-        autocmd BufReadPre * call CheckSwap()
-    augroup END
 endif

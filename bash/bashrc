@@ -102,6 +102,8 @@ export HISTIGNORE="&:[ ]*:exit"
 
 export EDITOR=vim
 export VISUAL=$EDITOR
+# VIM_SWAPDIR is used by .vimrc
+export VIM_SWAPDIR="$HOME/.vim/swap"
 # Make the prompt show the hostname
 export PS1="\h$ "
 # Preferred locale
@@ -428,6 +430,65 @@ function diff_combine {
         sed '1d' >> "$out_diff_file" 2>&1 "$diff_file2";
     fi
 };
+
+# List Vim swap files under $VIM_SWAPDIR
+# and print them as:
+#   decoded/original/path<TAB>/full/path/to/swapfile
+vim_swap_list() {
+  # Central configuration point
+  local SWAPDIR="${VIM_SWAPDIR:-$HOME/.vim/swap}"
+
+  # Bail out early if the swap dir isn't present
+  [[ -d "$SWAPDIR" ]] || { echo "swap dir not found: $SWAPDIR" >&2; return 1; }
+
+  # Find swap files (typically .swp, .swo, .swn, ...) and read them safely
+  # (NUL-delimited)
+  find "$SWAPDIR" -type f -name '*.sw?' -print0 2>/dev/null |
+    while IFS= read -r -d '' f; do
+      # Work with just the filename
+      local base noext decoded
+      base="$(basename -- "$f")"
+
+      # Extra guard: only accept Vim-like swap extensions .sw[a-z]
+      [[ "$base" =~ \.sw[a-z]$ ]] || continue
+
+      # Drop the extension (e.g., ".swp")
+      noext="${base%.*}"
+
+      # Your setup encodes paths like:
+      #   %u%user%git%repo%file.txt.swp
+      # Decode by turning leading '%' into '/' and remaining '%' into '/'
+      if [[ "$noext" == %* ]]; then
+        decoded="/${noext#%}"
+        decoded="${decoded//%//}"
+      else
+        # If it's not encoded, we can't reconstruct a path; show best-effort name
+        decoded="$noext"
+      fi
+
+      printf '%s\n   %s\n\n' "$decoded" "$f"
+    done
+}
+
+# Delete Vim swap files older than N days.
+#
+# Usage:
+#   vim_swap_cleanup          # uses $VIM_SWAPDAYS or defaults to 7
+#   vim_swap_cleanup 14       # delete swaps older than 14 days
+vim_swap_cleanup() {
+  # Central configuration point (shared with your vimrc if you want)
+  local SWAPDIR="${VIM_SWAPDIR:-$HOME/.vim/swap}"
+
+  # Retention: first arg wins; else env var; else default 7 days
+  local days="${1:-${VIM_SWAPDAYS:-7}}"
+
+  # Bail out early if the swap dir isn't present
+  [[ -d "$SWAPDIR" ]] || { echo "swap dir not found: $SWAPDIR" >&2; return 1; }
+
+  # Print each file before deleting it (so you have an audit trail)
+  # -mtime +N means "strictly older than N*24h"
+  find "$SWAPDIR" -type f -name '*.sw?' -mtime +"$days" -print -delete
+}
 
 # Run a command and send an email when finished
 function maildone {
